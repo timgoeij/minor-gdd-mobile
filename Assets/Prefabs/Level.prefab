@@ -53,3 +53,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _floorObject: {fileID: 1698048401875928, guid: acdf14f842f4a4e698a78d6c5416fe68,
     type: 2}
+  _laserObject: {fileID: 1677224541719370, guid: de450cf0c0f3a7f47adc8718e1290ebf,
+    type: 2}

@@ -12,7 +12,6 @@ public class Laser : ColorChangeableObject {
     
     // Use this for initialization
 	public override void Start () {
-
         base.Start();
 
         body = GetComponent<Rigidbody2D>();
@@ -20,8 +19,6 @@ public class Laser : ColorChangeableObject {
 
         body.gravityScale = 0;
         body.isKinematic = true;
-        Debug.Log(body.isKinematic);
-        Debug.Log(body.gravityScale);
 
         width = GetComponent<SpriteRenderer>().sprite.textureRect.width;
         width /= 100;
@@ -31,8 +28,6 @@ public class Laser : ColorChangeableObject {
 	
 	// Update is called once per frame
 	void Update () {
-
-        
         RaycastHit2D hit = Physics2D.Raycast(new Vector2((transform.position.x - width / 2), transform.position.y),Vector2.left);
 
         Debug.DrawRay(new Vector2((transform.position.x - width / 2), transform.position.y), Vector2.left, Color.red);

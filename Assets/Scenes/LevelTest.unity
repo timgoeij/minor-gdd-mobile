@@ -194,6 +194,11 @@ Prefab:
       propertyPath: m_BodyType
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 50410712847354080, guid: 65ecb553147004fddac9af191b81163c,
+        type: 2}
+      propertyPath: m_AngularDrag
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 65ecb553147004fddac9af191b81163c, type: 2}
   m_IsPrefabParent: 0
@@ -241,6 +246,21 @@ Prefab:
       propertyPath: _player
       value: 
       objectReference: {fileID: 1350156763}
+    - target: {fileID: 20153067745203448, guid: 2a25c29293dfd4439aa83e7c410e10f7,
+        type: 2}
+      propertyPath: m_BackGroundColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 20153067745203448, guid: 2a25c29293dfd4439aa83e7c410e10f7,
+        type: 2}
+      propertyPath: m_BackGroundColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 20153067745203448, guid: 2a25c29293dfd4439aa83e7c410e10f7,
+        type: 2}
+      propertyPath: m_BackGroundColor.b
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2a25c29293dfd4439aa83e7c410e10f7, type: 2}
   m_IsPrefabParent: 0
