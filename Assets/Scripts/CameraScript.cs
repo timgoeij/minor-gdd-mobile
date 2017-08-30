@@ -24,8 +24,6 @@ public class CameraScript : MonoBehaviour {
 	}
 
 	private int GetDivider() { 
-		Debug.Log(Camera.main.aspect);
-
 		if (Camera.main.aspect >= 1.7)
 		{
 				return 16;
