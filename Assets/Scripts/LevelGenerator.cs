@@ -27,9 +27,6 @@ public class LevelGenerator : MonoBehaviour {
 	void HandleFloorManagement() {
 		foreach(GameObject floor in _floors) {
 			if (floor.transform.position.x + CameraScreen.width < Camera.main.transform.position.x) {
-
-				floor.GetComponent<SpriteRenderer>().material.color = Color.red;
-
 				floor.transform.position = new Vector3(
 					(_floors.OrderByDescending(f => f.transform.position.x).First().transform.position.x + (1 * CameraScreen.width)),
 					floor.transform.position.y,
