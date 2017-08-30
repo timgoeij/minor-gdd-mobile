@@ -15,14 +15,16 @@ public class ColorChangeableObject : MonoBehaviour {
     [SerializeField]
     protected Colors colorChanges = Colors.Blue;
 
-    private Renderer colorRenderer;
+    private SpriteRenderer colorRenderer;
     
     
     // Use this for initialization
     public virtual void Start ()
     {
 
-        colorRenderer = GetComponent<Renderer>();
+        Debug.Log(GetComponent<SpriteRenderer>());
+
+        colorRenderer = GetComponent<SpriteRenderer>();
         ChangeColor(true);
 	}
 
@@ -49,20 +51,19 @@ public class ColorChangeableObject : MonoBehaviour {
             }
         }
 
-
         switch (startColor)
         {
             case Colors.Blue:
-                colorRenderer.material.color = Color.blue;
+                colorRenderer.color = Color.blue;
                 break;
             case Colors.Red:
-                colorRenderer.material.color = Color.red;
+                colorRenderer.color = Color.red;
                 break;
             case Colors.Yellow:
-                colorRenderer.material.color = Color.yellow;
+                colorRenderer.color = Color.yellow;
                 break;
             case Colors.Green:
-                colorRenderer.material.color = Color.green;
+                colorRenderer.color = Color.green;
                 break;
         }
 

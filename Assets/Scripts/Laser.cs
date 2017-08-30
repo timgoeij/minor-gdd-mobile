@@ -34,7 +34,6 @@ public class Laser : ColorChangeableObject {
 
         if(hit.collider != null)
         {
-            Debug.Log(hit.collider.name);
             if (hit.collider.CompareTag("Player"))
             {
                 ColorChangeableObject player = hit.collider.GetComponent<ColorChangeableObject>();

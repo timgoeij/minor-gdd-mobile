@@ -51,7 +51,6 @@ public class LevelGenerator : MonoBehaviour {
 			lastFloor.transform.position.y + (laser.GetComponent<SpriteRenderer>().bounds.extents.y * 1.5f),
 			10
 		);
-		laser.GetComponent<ColorChangeableObject>().ChangeColor( true );
 	}
 
 	void HandleFloorManagement() {
