@@ -28,35 +28,45 @@ public class ColorChangeableObject : MonoBehaviour {
 
     public void ChangeColor(bool startUp = false)
     {
-        switch(colorChanges)
+
+        Colors startColor = (Colors)((int)colorChanges +1);
+
+        if (startUp)
+        {
+            startColor = (Colors)Random.Range((int)Colors.Blue, (int)Colors.Green + 1);
+        }
+        else
+        {
+            int index = (int)colorChanges + 1;
+
+            if(index > (int)Colors.Green)
+            {
+                startColor = Colors.Blue;
+            }
+            else
+            {
+                startColor = (Colors)index;
+            }
+        }
+
+
+        switch (startColor)
         {
             case Colors.Blue:
-                colorChanges = ApplyColors(Colors.Blue, Colors.Red, startUp);
-                colorRenderer.material.color = ApplyColor(Color.blue, Color.red, startUp);
+                colorRenderer.material.color = Color.blue;
                 break;
             case Colors.Red:
-                colorChanges = ApplyColors(Colors.Red, Colors.Yellow, startUp);
-                colorRenderer.material.color = ApplyColor(Color.red, Color.yellow, startUp);
+                colorRenderer.material.color = Color.red;
                 break;
             case Colors.Yellow:
-                colorChanges = ApplyColors(Colors.Yellow, Colors.Green, startUp);
-                colorRenderer.material.color = ApplyColor(Color.yellow, Color.green, startUp);
+                colorRenderer.material.color = Color.yellow;
                 break;
             case Colors.Green:
-                colorChanges = ApplyColors(Colors.Green, Colors.Blue, startUp);
-                colorRenderer.material.color = ApplyColor(Color.green, Color.blue, startUp);
+                colorRenderer.material.color = Color.green;
                 break;
         }
-    }
 
-    private Color ApplyColor(Color startColor, Color changeColor, bool start)
-    {
-        return start ? startColor : changeColor;
-    }
-
-    private Colors ApplyColors(Colors colorStart, Colors colorChange, bool start)
-    {
-        return start ? colorStart : colorChange;
+        colorChanges = startColor;
     }
     
     public Colors GetCurrentColor()
