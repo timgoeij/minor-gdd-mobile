@@ -21,9 +21,6 @@ public class ColorChangeableObject : MonoBehaviour {
     // Use this for initialization
     public virtual void Start ()
     {
-
-        Debug.Log(GetComponent<SpriteRenderer>());
-
         colorRenderer = GetComponent<SpriteRenderer>();
         ChangeColor(true);
 	}

@@ -8,7 +8,7 @@ public class CameraScript : MonoBehaviour {
 	private GameObject _player;
 	// Use this for initialization
 	void Start () {
-		
+		_player = GameObject.FindGameObjectWithTag("Player");
 	}
 	
 	// Update is called once per frame
@@ -18,11 +18,14 @@ public class CameraScript : MonoBehaviour {
 			new Vector3(
 				_player.transform.position.x + CameraScreen.width / GetDivider(), 
 				_player.transform.position.y + CameraScreen.width / GetDivider(), 
-				transform.position.z), 
+				transform.position.z
+			), 
 			1f);
 	}
 
 	private int GetDivider() { 
+		Debug.Log(Camera.main.aspect);
+
 		if (Camera.main.aspect >= 1.7)
 		{
 				return 16;
