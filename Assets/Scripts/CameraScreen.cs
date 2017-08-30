@@ -13,4 +13,8 @@ public static class CameraScreen {
       return Camera.main.orthographicSize * 2;
     }
   }
+
+  public static bool ObjectIsBehindCamera(Transform t) {
+    return (t.position.x + CameraScreen.width < Camera.main.transform.position.x);
+  }
 }
