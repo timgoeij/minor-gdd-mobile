@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerScript : MonoBehaviour {
+public class PlayerScript : ColorChangeableObject {
 
 	private float _speed = 0.1f;
 
 	// Use this for initialization
-	void Start () {
-		
-	}
+    public override void Start()
+    {
+        base.Start();
+    }
 	
 	// Update is called once per frame
 	void Update () {
