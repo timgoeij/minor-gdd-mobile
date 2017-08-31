@@ -36,6 +36,7 @@ public class LevelGenerator : MonoBehaviour {
 		if (_timeSinceLastObstacle > ((_bpm * 60) / 1000)) {
 			if (Random.Range(0, _obstacleChance) == 0) {
 				SetLaser();
+				_timeSinceLastObstacle = 0;
 			}
 		} else {
 			_timeSinceLastObstacle += Time.deltaTime;
@@ -43,11 +44,11 @@ public class LevelGenerator : MonoBehaviour {
 	}
 
 	void SetLaser() {
-		GameObject lastFloor = _floors.OrderByDescending(f => f.transform.position.x).First();
+		GameObject lastFloor = _floors.OrderBy(f => f.transform.position.x).First();
 
 		GameObject laser = Instantiate(_laserObject);
 		laser.transform.position = new Vector3 (
-			lastFloor.transform.position.x,
+			lastFloor.transform.position.x + CameraScreen.width,
 			lastFloor.transform.position.y + (laser.GetComponent<SpriteRenderer>().bounds.extents.y * 1.5f),
 			10
 		);
