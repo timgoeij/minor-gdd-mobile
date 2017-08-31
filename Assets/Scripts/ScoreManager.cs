@@ -5,10 +5,12 @@ using UnityEngine;
 
 public class ScoreManager : MonoBehaviour {
 
-	private float _totalSeconds = 0;
+	private static float totalSeconds = 0;
 
 	[SerializeField]
 	private GameObject _timeText;
+
+	private bool _timerStarted = false;
 
 	// Use this for initialization
 	void Start () {
@@ -17,13 +19,24 @@ public class ScoreManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		UpdateTime();
+		if(_timerStarted) {
+			UpdateTime();
+		}
+	}
+
+	public void StartTimer() {
+		_timerStarted = true;
+		_timeText.SetActive(true);
 	}
 
 	void UpdateTime() {
-		_totalSeconds += Time.deltaTime;
+		ScoreManager.totalSeconds += Time.deltaTime;
 
-		_timeText.GetComponent<UnityEngine.UI.Text>().text = Math.Round(_totalSeconds, 1).ToString();
+		_timeText.GetComponent<UnityEngine.UI.Text>().text = Math.Round(ScoreManager.totalSeconds, 1).ToString();
  	}
+
+	 public static float totalTime() {
+		 return ScoreManager.totalSeconds;
+	 } 
 
 }

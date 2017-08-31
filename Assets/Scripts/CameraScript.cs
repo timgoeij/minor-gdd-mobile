@@ -5,10 +5,15 @@ using UnityEngine;
 public class CameraScript : MonoBehaviour {
 
 	[SerializeField]
-	private GameObject _player;
+
+	private GameObject _target;
 	// Use this for initialization
 	void Start () {
-		_player = GameObject.FindGameObjectWithTag("Player");
+		
+	}
+
+	public void SetTarget(string targetTag) {
+		_target = GameObject.FindGameObjectWithTag(targetTag);
 	}
 	
 	// Update is called once per frame
@@ -16,17 +21,17 @@ public class CameraScript : MonoBehaviour {
 		transform.position = Vector3.Lerp(
 			transform.position, 
 			new Vector3(
-				_player.transform.position.x + CameraScreen.width / GetDivider(), 
-				_player.transform.position.y + CameraScreen.width / GetDivider(), 
+				_target.transform.position.x + CameraScreen.width / GetDivider(), 
+				_target.transform.position.y + CameraScreen.height / (GetDivider() * 3) , 
 				transform.position.z
 			), 
 			1f);
 	}
 
-	private int GetDivider() { 
+	private int GetDivider() {
 		if (Camera.main.aspect >= 1.7)
 		{
-				return 16;
+				return 3;
 		}
 		else if (Camera.main.aspect >= 1.5)
 		{

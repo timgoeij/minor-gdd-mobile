@@ -9,6 +9,7 @@ public class Laser : ColorChangeableObject {
     private Rigidbody2D body;
     private BoxCollider2D col;
     private float width;
+    private float height;
     
     // Use this for initialization
 	public override void Start () {
@@ -21,24 +22,26 @@ public class Laser : ColorChangeableObject {
         body.isKinematic = true;
 
         width = GetComponent<SpriteRenderer>().sprite.textureRect.width;
-        width /= 100;
+        width /= 25;
+
+        height = GetComponent<SpriteRenderer>().sprite.textureRect.height;
+        height /= 100;
+        height *= 1.5f;
 
         FindObjectOfType<InputManager>().add(this);
     }
 	
 	// Update is called once per frame
 	void Update () {
-        RaycastHit2D hit = Physics2D.Raycast(new Vector2((transform.position.x - width / 2), transform.position.y),Vector2.left);
+        RaycastHit2D hit = Physics2D.Raycast(new Vector2((transform.position.x - width), (transform.position.y - height / 2)), Vector2.up);
 
-        Debug.DrawRay(new Vector2((transform.position.x - width / 2), transform.position.y), Vector2.left, Color.red);
+        Debug.DrawRay(new Vector2((transform.position.x - width), (transform.position.y - height / 2)), Vector2.up, Color.red);
 
         if(hit.collider != null)
         {
             
             if (hit.collider.CompareTag("Player"))
             {
-                Debug.Log(hit.collider.name);
-
                 ColorChangeableObject player = hit.collider.GetComponent<ColorChangeableObject>();
                 
 
@@ -59,8 +62,7 @@ public class Laser : ColorChangeableObject {
     {
         if(collision.CompareTag("Player"))
         {
-            Debug.Log("out of trigger");
-            //FindObjectOfType<InputManager>().remove(this);
+            FindObjectOfType<InputManager>().remove(this);
         }
     }
 
@@ -68,7 +70,6 @@ public class Laser : ColorChangeableObject {
     {
         if (collision.collider.CompareTag("Player"))
         {
-            Debug.Log("isCollision");
         }
     }
 }
