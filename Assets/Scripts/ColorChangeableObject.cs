@@ -36,16 +36,15 @@ public class ColorChangeableObject : MonoBehaviour {
         }
         else
         {
-            int index = (int)colorChanges + 1;
-
-            if(index > (int)Colors.Green)
-            {
-                startColor = Colors.Blue;
-            }
+            if (colorChanges == Colors.Blue)
+                startColor = Colors.Red;
+            else if (colorChanges == Colors.Red)
+                startColor = Colors.Yellow;
+            else if (colorChanges == Colors.Yellow)
+                startColor = Colors.Green;
             else
-            {
-                startColor = (Colors)index;
-            }
+                startColor = Colors.Blue;
+
         }
 
         switch (startColor)

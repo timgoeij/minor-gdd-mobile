@@ -34,8 +34,11 @@ public class Laser : ColorChangeableObject {
 
         if(hit.collider != null)
         {
+            
             if (hit.collider.CompareTag("Player"))
             {
+                Debug.Log(hit.collider.name);
+
                 ColorChangeableObject player = hit.collider.GetComponent<ColorChangeableObject>();
                 
 
@@ -52,11 +55,12 @@ public class Laser : ColorChangeableObject {
 		
 	}
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerExit2D(Collider2D collision)
     {
         if(collision.CompareTag("Player"))
         {
-            FindObjectOfType<InputManager>().remove(this);
+            Debug.Log("out of trigger");
+            //FindObjectOfType<InputManager>().remove(this);
         }
     }
 
