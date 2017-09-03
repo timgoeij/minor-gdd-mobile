@@ -4,70 +4,41 @@ using UnityEngine;
 
 public class ColorChangeableObject : MonoBehaviour {
 
-    public enum Colors
-    {
-        Blue, 
-        Red,
-        Yellow,
-        Green
-    }
+    protected List<Color> colors = new List<Color> {
+        Color.red,
+        Color.green,
+        Color.blue
+    };
 
-    [SerializeField]
-    protected Colors colorChanges = Colors.Blue;
+    protected int currentColor;
 
-    private SpriteRenderer colorRenderer;
-    
+    private SpriteRenderer _renderer;
     
     // Use this for initialization
     public virtual void Start ()
     {
-        colorRenderer = GetComponent<SpriteRenderer>();
-        ChangeColor(true);
+        _renderer = GetComponent<SpriteRenderer>();
+        SetColor( UnityEngine.Random.Range(0, (colors.Count - 1)) );
 	}
 
     public void ChangeColor(bool startUp = false)
     {
+        int cc = (currentColor + 1);
 
-        Colors startColor = (Colors)((int)colorChanges +1);
-
-        if (startUp)
-        {
-            startColor = (Colors)Random.Range((int)Colors.Blue, (int)Colors.Green + 1);
-        }
-        else
-        {
-            if (colorChanges == Colors.Blue)
-                startColor = Colors.Red;
-            else if (colorChanges == Colors.Red)
-                startColor = Colors.Yellow;
-            else if (colorChanges == Colors.Yellow)
-                startColor = Colors.Green;
-            else
-                startColor = Colors.Blue;
-
+        if (cc > (colors.Count - 1)) {
+            cc = 0;
         }
 
-        switch (startColor)
-        {
-            case Colors.Blue:
-                colorRenderer.color = Color.blue;
-                break;
-            case Colors.Red:
-                colorRenderer.color = Color.red;
-                break;
-            case Colors.Yellow:
-                colorRenderer.color = Color.yellow;
-                break;
-            case Colors.Green:
-                colorRenderer.color = Color.green;
-                break;
-        }
-
-        colorChanges = startColor;
+        SetColor( cc );
     }
     
-    public Colors GetCurrentColor()
+    private void SetColor(int color) {
+        currentColor = color;
+        _renderer.color = GetCurrentColor();
+    }
+
+    public Color GetCurrentColor()
     {
-        return colorChanges;
+        return colors[currentColor];
     }
 }

@@ -1,28 +1,45 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using System;
 
 public class GameController : MonoBehaviour {
 
     [SerializeField]
     private GameObject mainMenu;
 
-    private float endScore = 0;
+    [SerializeField]
+    private GameObject gameOver;
+
+    public float previousScore = 0;
+
+    private void Start()
+    {
+
+        mainMenu = GameObject.Find("MainMenu");
+        gameOver = GameObject.Find("GameOver");
+        gameOver.SetActive(false);
+    }
 
     public void startGame()
     {
-        LevelGenerator generator = FindObjectOfType<LevelGenerator>();
-        generator.startGame();
-
-        ScoreManager score = FindObjectOfType<ScoreManager>();
-        score.StartTimer();
+        FindObjectOfType<LevelGenerator>().startGame();
+        FindObjectOfType<ScoreManager>().StartTimer();
         mainMenu.SetActive(false);
-
         Camera.main.GetComponent<CameraScript>().SetTarget("Player");
     }
 
-    public void EndGamme(float score)
+    public void EndGame()
     {
-        endScore = score;
+        gameOver.SetActive(true);
+        gameOver.transform.Find("ScoreText").GetComponent<Text>().text = ScoreManager.GetRoundedScoreAsString();
+    } 
+
+    public void ReloadGame()
+    {
+        //transform.name = "OldController";
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

@@ -35,7 +35,7 @@ Transform:
   m_GameObject: {fileID: 1799035940529136}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 0.5, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -53,5 +53,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _floorObject: {fileID: 1698048401875928, guid: acdf14f842f4a4e698a78d6c5416fe68,
     type: 2}
-  _laserObject: {fileID: 1677224541719370, guid: de450cf0c0f3a7f47adc8718e1290ebf,
+  _laserObject: {fileID: 1024415205955204, guid: fd68a3a091e1d4e418bfb5a8259bdc56,
+    type: 2}
+  _rotatorObject: {fileID: 1527779809954736, guid: dcbc184df6ac74817be9041ad2f48496,
     type: 2}

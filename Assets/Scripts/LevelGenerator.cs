@@ -9,6 +9,7 @@ public class LevelGenerator : MonoBehaviour {
 	private List<GameObject> _floors = new List<GameObject>();
 	private List<GameObject> _obstacles = new List<GameObject>();
 
+	private InputManager _inputManager;
 	private GameObject _player;
 
 	[SerializeField]
@@ -16,6 +17,9 @@ public class LevelGenerator : MonoBehaviour {
 
 	[SerializeField]
 	private GameObject _laserObject;
+
+	[SerializeField]
+	private GameObject _rotatorObject;
 
 	private float _timeSinceLastObstacle = 0;
 	private int _obstacleChance = 50;
@@ -29,8 +33,20 @@ public class LevelGenerator : MonoBehaviour {
 		}
 
 		set {
-			if (value > 0.3f) {
+			if (value > 0.2f) {
 				_timeBetweenObstacles = value;
+			}
+		}
+	}
+
+	public int obstacleChance {
+		get {
+			return _obstacleChance;
+		}
+
+		set {
+			if (value > 20) {
+				_obstacleChance = value;
 			}
 		}
 	}
@@ -39,7 +55,7 @@ public class LevelGenerator : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		_player = GameObject.FindGameObjectWithTag("Player");		
+		_player = GameObject.FindGameObjectWithTag("Player");
 		createStartingRoom();
 	}
 
@@ -49,7 +65,7 @@ public class LevelGenerator : MonoBehaviour {
 
 	public void startGame() {
 		_gameHasStarted = true;
-		_player.GetComponent<PlayerScript>().speed = 0.1f;
+		_player.GetComponent<PlayerScript>().speed = 0.3f;
 	}
 
 	// Update is called once per frame
@@ -64,16 +80,19 @@ public class LevelGenerator : MonoBehaviour {
 	}
 
 	private void HandleDifficultyManagement() {
-		int totalTime = (int) Math.Round(ScoreManager.totalTime());
+		int totalTime = (int) ScoreManager.GetRoundedScore();
 
 		if (totalTime != _lastDifficultyUpdate && totalTime % _difficultyUpdateAfterSeconds == 0) {
-			if (UnityEngine.Random.Range(0, 5) == 0) {
-				_player.GetComponent<PlayerScript>().speed += 0.05f;
-			} else {
+			
+			int randomNumber = UnityEngine.Random.Range(0, 3);
+
+			if (randomNumber == 0) {
 				timeBetweenObstacles -= 0.1f;
+			} else {
+				obstacleChance -= 1;
 			}
 
-			_lastDifficultyUpdate = totalTime;
+			_lastDifficultyUpdate = totalTime; 
 		}
 	}
 
@@ -86,6 +105,7 @@ public class LevelGenerator : MonoBehaviour {
 		for(int i = 0; i < _obstacles.Count; i++) {
 			GameObject obs = _obstacles[i];
 			if (CameraScreen.ObjectIsBehindCamera(obs.transform)) {
+
 				_obstacles.Remove(obs);
 				Destroy(obs);
 			}
@@ -95,7 +115,11 @@ public class LevelGenerator : MonoBehaviour {
 	private void SetObstacles() {
 			if (_timeSinceLastObstacle > _timeBetweenObstacles) {
 				if (UnityEngine.Random.Range(0, _obstacleChance) == 0) {
-					SetLaser();
+					if (UnityEngine.Random.Range(0, 2) == 0) {
+						SetRotator();
+					} else {
+						SetLaser();
+					}
 					_timeSinceLastObstacle = 0;
 				}
 			} else {
@@ -103,19 +127,31 @@ public class LevelGenerator : MonoBehaviour {
 			}
 		}
 
+	private void SetRotator() {
+		GameObject lastFloor = _floors.OrderByDescending(f => f.transform.position.x).First();
+
+		GameObject laser = Instantiate(_rotatorObject);
+		laser.transform.position = new Vector3 (
+			_player.transform.position.x + CameraScreen.width,
+			lastFloor.transform.position.y + (laser.GetComponent<SpriteRenderer>().bounds.size.y * 3.5f),
+			10
+		);
+
+		_obstacles.Add(laser);
+	}
+
 	private void SetLaser() {
-			GameObject lastFloor = _floors.OrderByDescending(f => f.transform.position.x).First();
+		GameObject lastFloor = _floors.OrderByDescending(f => f.transform.position.x).First();
 
-			GameObject laser = Instantiate(_laserObject);
-			laser.transform.position = new Vector3 (
-				_player.transform.position.x + CameraScreen.width,
-				lastFloor.transform.position.y + (laser.GetComponent<SpriteRenderer>().bounds.extents.y * 1.5f),
-				10
-			);
+		GameObject laser = Instantiate(_laserObject);
+		laser.transform.position = new Vector3 (
+			_player.transform.position.x + CameraScreen.width,
+			lastFloor.transform.position.y + (laser.GetComponent<SpriteRenderer>().bounds.extents.y),
+			10
+		);
 
-			_obstacles.Add(laser);
-		}
-
+		_obstacles.Add(laser);
+	}
 	private void HandleFloorManagement() {
 		MoveFloors();
 	}
@@ -133,9 +169,9 @@ public class LevelGenerator : MonoBehaviour {
 	}
 
 	private void CreateFloors() {
-		CreateFloor( new Vector3(0, -(CameraScreen.height / 2), 10), new Vector3(CameraScreen.width, 1, 1) );	
-		CreateFloor( new Vector3(CameraScreen.width, -(CameraScreen.height / 2), 10), new Vector3(CameraScreen.width, 1, 1) );
-		CreateFloor( new Vector3(CameraScreen.width * 2, -(CameraScreen.height / 2), 10), new Vector3(CameraScreen.width, 1, 1) );
+		CreateFloor( new Vector3(0, -(CameraScreen.height / 2), 10), new Vector3(CameraScreen.width, 0.1f, 1) );	
+		CreateFloor( new Vector3(CameraScreen.width, -(CameraScreen.height / 2), 10), new Vector3(CameraScreen.width, 0.1f, 1) );
+		CreateFloor( new Vector3(CameraScreen.width * 2, -(CameraScreen.height / 2), 10), new Vector3(CameraScreen.width, 0.1f, 1) );
 	}
 
 	private void CreateFloor(Vector3 position, Vector3 scale, bool addToFloors = true) {

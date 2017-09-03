@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerScript : ColorChangeableObject {
 
-	private float maxSpeed = 0.1f;
+	private float maxSpeed = 0.5f;
 	private float _speed = 0;
 	public float speed {
 		get {
@@ -25,6 +25,11 @@ public class PlayerScript : ColorChangeableObject {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-		transform.Translate( Vector3.right * speed );
+		 transform.position = Vector3.MoveTowards(transform.position, transform.position + new Vector3(1, 0, 0), speed);
+	}
+
+	public void Hit() {
+		speed = 0;
+		GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().EndGame();
 	}
 }

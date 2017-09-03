@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ScoreManager : MonoBehaviour {
 
-	private static float totalSeconds = 0;
+	public static float totalSeconds = 0;
 
 	[SerializeField]
 	private GameObject _timeText;
@@ -26,7 +26,16 @@ public class ScoreManager : MonoBehaviour {
 
 	public void StartTimer() {
 		_timerStarted = true;
+		totalSeconds = 0;
 		_timeText.SetActive(true);
+	}
+
+	public static double GetRoundedScore() {
+		return Math.Round(ScoreManager.totalSeconds, 1);
+	}
+
+	public static string GetRoundedScoreAsString() {
+		return ScoreManager.GetRoundedScore().ToString();
 	}
 
 	void UpdateTime() {
@@ -35,7 +44,7 @@ public class ScoreManager : MonoBehaviour {
 		_timeText.GetComponent<UnityEngine.UI.Text>().text = Math.Round(ScoreManager.totalSeconds, 1).ToString();
  	}
 
-	 public static float totalTime() {
+	 public static float TotalTime() {
 		 return ScoreManager.totalSeconds;
 	 } 
 

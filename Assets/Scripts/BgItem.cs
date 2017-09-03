@@ -28,8 +28,6 @@ public class BgItem : MonoBehaviour {
 		
 		GetComponent<SpriteRenderer>().sprite = _sprites[ UnityEngine.Random.Range(0, (_sprites.Count - 1)) ];
 		GetComponent<SpriteRenderer>().color = GetRandomColor();
-		
-		Debug.Log(Camera.main.transform.position.x);
 
 		transform.position = new Vector3 (
 			_player.transform.position.x + (CameraScreen.width * 1.5f),

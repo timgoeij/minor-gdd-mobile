@@ -4,39 +4,34 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour, IColorChangeObserver {
 
-    private List<ColorChangeableObject> changeableObjects;
+    private List<ColorChangeableObject> changeableObjects = new List<ColorChangeableObject>();
 
     // Use this for initialization
-    void Awake () {
-
+    void awake() {
         changeableObjects = new List<ColorChangeableObject>();
-		
-	}
+    }
 	
 	// Update is called once per frame
 	void Update () {
 
-#if UNITY_ANDROID
-        
-        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)
-        {
-            foreach(ColorChangeableObject changeableColorObject in changeableObjects)
+        #if UNITY_ANDROID              
+            if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)
             {
-                changeableColorObject.ChangeColor(false);
+                foreach(ColorChangeableObject changeableColorObject in changeableObjects)
+                {
+                    changeableColorObject.ChangeColor(false);
+                }
             }
-        }
+        #else
 
-#else
-
-        if (Input.anyKeyDown)
-        {
-            foreach (ColorChangeableObject changeableColorObject in changeableObjects)
+            if (Input.anyKeyDown)
             {
-                changeableColorObject.ChangeColor();
+                foreach (ColorChangeableObject changeableColorObject in changeableObjects)
+                {
+                    changeableColorObject.ChangeColor();
+                }
             }
-        }
-
-#endif
+        #endif
     }
 
     public void add(ColorChangeableObject changeableObject)
