@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(BoxCollider2D))]
-public class Laser : ColorChangeableObject {
+public class Laser : ColorChangeableObject, IObstacle {
     private GameObject _player;
     
     private InputManager _inputManager;
@@ -15,7 +14,6 @@ public class Laser : ColorChangeableObject {
 
         _inputManager = FindObjectOfType<InputManager>();
         _player = GameObject.FindGameObjectWithTag("Player");
-
         _inputManager.add(this);
     }
 	
@@ -28,7 +26,7 @@ public class Laser : ColorChangeableObject {
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    public virtual void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.CompareTag("Player"))
         {
@@ -39,4 +37,9 @@ public class Laser : ColorChangeableObject {
     void OnDestroy() {
         _inputManager.remove(this);
     }
+
+  float IObstacle.GetYOffset()
+  {
+    return GetComponent<SpriteRenderer>().bounds.extents.y; 
+  }
 }

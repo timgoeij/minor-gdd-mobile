@@ -2,30 +2,33 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ColorChangeableObject : MonoBehaviour {
-
-    protected List<Color> colors = new List<Color> {
-        Color.red,
-        Color.green,
-        Color.blue
-    };
-
+public abstract class ColorChangeableObject : MonoBehaviour {
     protected int currentColor;
-
     private SpriteRenderer _renderer;
+
+    private LevelManager _levelManager;
     
-    // Use this for initialization
+    private List<Color> _availableColors;
+
     public virtual void Start ()
     {
+        _availableColors = ColorManager.colors();
         _renderer = GetComponent<SpriteRenderer>();
-        SetColor( UnityEngine.Random.Range(0, (colors.Count - 1)) );
+        _levelManager = FindObjectOfType<LevelManager>();
+
+        if (_levelManager.forcedColor != null) {
+            SetColor( (int) _levelManager.forcedColor );
+        } else {
+            SetColor( UnityEngine.Random.Range(0, (ColorManager.colors().Count - 1)) );
+        }
+        
 	}
 
     public void ChangeColor(bool startUp = false)
     {
         int cc = (currentColor + 1);
 
-        if (cc > (colors.Count - 1)) {
+        if (cc > (_availableColors.Count - 1)) {
             cc = 0;
         }
 
@@ -39,6 +42,6 @@ public class ColorChangeableObject : MonoBehaviour {
 
     public Color GetCurrentColor()
     {
-        return colors[currentColor];
+        return _availableColors[currentColor];
     }
 }

@@ -29,7 +29,12 @@ public class PlayerScript : ColorChangeableObject {
 	}
 
 	public void Hit() {
+		FindObjectOfType<ScoreManager>().StopTimer();
 		speed = 0;
-		GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().EndGame();
+		FindObjectOfType<GameController>().EndGame();
+	}
+
+	public void StartRunning() {
+		speed = 0.3f;
 	}
 }

@@ -23,7 +23,6 @@ public class InputManager : MonoBehaviour, IColorChangeObserver {
                 }
             }
         #else
-
             if (Input.anyKeyDown)
             {
                 foreach (ColorChangeableObject changeableColorObject in changeableObjects)

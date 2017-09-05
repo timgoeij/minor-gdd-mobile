@@ -14,7 +14,6 @@ public class BgItem : MonoBehaviour {
 
 	private List<Color> _colors = new List<Color> {
 		Color.gray,
-		Color.magenta,
 		Color.cyan,
 		Color.yellow
 	};
@@ -36,6 +35,7 @@ public class BgItem : MonoBehaviour {
 		);
 
 		transform.localScale *= (bigOne) ? UnityEngine.Random.Range(10, 20) : UnityEngine.Random.Range(1, 3);
+		transform.Rotate(0, 0, UnityEngine.Random.Range(0, 20));
 	}
 	
 	// Update is called once per frame
@@ -45,7 +45,7 @@ public class BgItem : MonoBehaviour {
 
 	private Color GetRandomColor() {
 		Color c = _colors[ UnityEngine.Random.Range(0, _colors.Count) ];
-		c.a = UnityEngine.Random.Range(0.1f, 0.8f);
+		c.a = UnityEngine.Random.Range(0.1f, 0.5f);
 
 		return c;
 	}
