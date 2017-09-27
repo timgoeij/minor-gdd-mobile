@@ -4,110 +4,151 @@ using System.Linq;
 using UnityEngine;
 
 public class DifficultyManager : MonoBehaviour {
-	
-	[SerializeField]
-	private GameObject _laserObject;
 
-	[SerializeField]
-	private GameObject _rotatorObject;
-	
-	[SerializeField]
-	private GameObject _UpAndDowner;
+    public bool laserColorChanges {
+        get;
+        private set;
+    }
 
-	private List<ColorsToAdd> _colorsToAdd = new List<ColorsToAdd>();
-	private List<GameObject> _obstacles = new List<GameObject>();
-	private List<ObstacleToAdd> _obstaclesToAdd = new List<ObstacleToAdd>();
+    public bool boxColorChanges {
+        get;
+        private set;
+    }
 
-	private int _obstacleChance = 30;
-	private float _timeBetweenObstacles = 1f;
+	private List<PatternToAdd> _patternsToAdd;
 
-	private int _difficultyUpdateAfterSeconds = 10;
-	private int _lastDifficultyUpdate = 0;
-
-	public float timeBetweenObstacles {
-		get {
-			return _timeBetweenObstacles;	
-		}
-
-		set {
-			if (value > 0.4f) {
-				_timeBetweenObstacles = value;
-			}
-		}
-	}
-	public int obstacleChance {
-		get {
-			return _obstacleChance;
-		}
-
-		set {
-			if (value > 10) {
-				_obstacleChance = value;
-			}
-		}
-	}
+	// Use this for initialization
 	void Start () {
-		SetStartingObstacles();
-		AddObstaclesToAdd();
-		AddColorsToAdd();
+        _patternsToAdd = new List<PatternToAdd> {
+
+            new PatternToAdd
+            {
+                Pattern = new FirstUpAndDown(),
+                AddAfterSeconds = 20,
+                Notification = "?! My God, Why @re they m0ving ?!",
+                ExtraPatterns = new List<LevelPattern>()
+                {
+                    new UpAndDownLaserPattern(),
+                    new UpDownUpDown(),
+                    new UpDownUpDownFast(),
+                    new MixedUpDown()
+                },
+            },
+
+            new PatternToAdd
+            {
+                Pattern = new FirstRotators(),
+                AddAfterSeconds = 40,
+                Notification = "#$# Welcome to Windmill Park! #%#",
+                ExtraPatterns = new List<LevelPattern>() {
+                    new Windmillpark(),
+                    new SmallPark(),
+                    new QuickMix(),
+                    new NiceMix()
+                }
+            },
+
+            new PatternToAdd
+            {
+                Pattern = new FirstBox(),
+                AddAfterSeconds = 60,
+                Notification = ">:( Don't get trapped...",
+                ExtraPatterns = new List<LevelPattern>()
+                {
+                    new RotationBoxPattern(),
+                    new UpAndDownLaserBox(),
+                    new QuickUpAndDownBox()
+                }
+            },
+
+            new PatternToAdd
+            {
+                Pattern = new FirstChangeableUpAndDownLaser(),
+                AddAfterSeconds = 80,
+                Notification = "^% $ Trust Nob0dy $ %^",
+                ExtraPatterns = new List<LevelPattern>(),
+            },
+
+            new PatternToAdd
+            {
+                Pattern = new FirstCircle(),
+                AddAfterSeconds = 100,
+                Notification = "!!!!!! I N C O M I NG !!!!!!",
+                ExtraPatterns = new List<LevelPattern>()
+                {
+                    new Circles(),
+                    new DownhillCircles()
+                }
+            },
+
+            new PatternToAdd
+            {
+                Pattern = new FirstChangeableBox(),
+                AddAfterSeconds = 120,
+                Notification = "#MoreDangerous",
+                ExtraPatterns = new List<LevelPattern>()
+                {
+                    new UpAndDownChangeableLaserBox()
+                }
+            },
+
+            new PatternToAdd
+            {
+                Pattern = new FirstTriangles(),
+                AddAfterSeconds = 160,
+                Notification = "#$# SHARKS ?!? #%#",
+                ExtraPatterns = new List<LevelPattern>()
+                {
+                    new DownHillTriangles(),
+                    new TrianglesAndCircles()
+                }
+            },
+
+            new PatternToAdd
+            {
+                Pattern = new FirstFallingPattern(),
+                AddAfterSeconds = 5,
+                Notification = "FALLING",
+                ExtraPatterns = new List<LevelPattern>(){}
+            },
+
+            new PatternToAdd
+            {
+                Pattern = new NewColorPattern(),
+                AddAfterSeconds = 240,
+                Notification = ":D NEW COLOR  - DEATH IMMINENT :D",
+                ExtraPatterns = new List<LevelPattern>(){},
+                Color = Color.magenta
+            }
+        };
 	}
-	private void SetStartingObstacles() {
-		_obstacles.Add(_laserObject);
+
+	public bool HasPatternToAdd() {
+		return (GetPatternToAdd() != null);
 	}
 
-	private void AddObstaclesToAdd() {
-		_obstaclesToAdd.Add( new ObstacleToAdd { obstacle = _rotatorObject, addAfterSeconds = 20 });
-		_obstaclesToAdd.Add( new ObstacleToAdd { obstacle = _UpAndDowner, addAfterSeconds = 60 });
+	public PatternToAdd GetPatternToAdd() {
+		return _patternsToAdd.Where(
+			p => p.AddAfterSeconds < Timer.TotalTime && 
+					 p.Added == false
+		).FirstOrDefault();
 	}
 
-	private void AddColorsToAdd() {
-		_colorsToAdd.Add( new ColorsToAdd { color = Color.magenta, addAfterSeconds = 40 });
-	}
+    public void AllowLaserColorChanges() {
+        laserColorChanges = true;
+    }
 
-	void Update () {
-		int totalTime = (int) ScoreManager.GetRoundedScore();
+    public void AllowBoxColorChanges() {
+        boxColorChanges = true;
+    }
+}
 
-		ChangeObstacleTime(totalTime);
-		AddObstacles(totalTime);
-		AddColors(totalTime);
-	}
-
-	private void ChangeObstacleTime(int totalTime) {
-		if (totalTime != _lastDifficultyUpdate && totalTime % _difficultyUpdateAfterSeconds == 0) {
-				timeBetweenObstacles -= 0.1f;
-				obstacleChance -= 1;
-			_lastDifficultyUpdate = totalTime; 
-		} 
-	}
-	private void AddObstacles(int totalTime) {
-		ObstacleToAdd obst = _obstaclesToAdd.Where(o => o.addAfterSeconds == totalTime).FirstOrDefault();
-
-		if (obst == null)  {
-			return;
-		}
-
-		if (_obstacles.Where(o => o == obst.obstacle).Count() != 0) {
-			return;
-		}
-
-		_obstacles.Add( obst.obstacle );
-	}
-	private void AddColors(int totalTime) {
-		ColorsToAdd colorToAdd = _colorsToAdd.Where(c => c.addAfterSeconds == totalTime).FirstOrDefault();
-
-		if (colorToAdd == null) {
-			return;
-		}
-
-		if (ColorManager.colors().Where(c => c == colorToAdd.color).Count() != 0) {
-			return;
-		}
-
-		ColorManager.AddColor( colorToAdd.color );
-		FindObjectOfType<LevelManager>().SetForcedColor( (ColorManager.colors().Count - 1), 15 );
-	}
-
-  public List<GameObject> GetObstacles() {
-		return _obstacles;
-	} 
+public class PatternToAdd {
+	public float AddAfterSeconds;
+	public LevelPattern Pattern;
+	public bool Added = false;
+	public List<LevelPattern> ExtraPatterns = new List<LevelPattern>();
+    public string Notification = "";
+    public Color? Color = null;
+    public delegate void OnCall ();
 }

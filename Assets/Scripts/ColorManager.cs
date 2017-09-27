@@ -24,8 +24,30 @@ public static class ColorManager {
     {
         basicColors.Clear();
         basicColors.Add(Color.red);
-        basicColors.Add(Color.green);
-        basicColors.Add(Color.blue);
+        basicColors.Add(Color.cyan);
+        basicColors.Add(Color.yellow);
 
+    }
+
+    public static int FindNextIndexOfColor(Color c) {
+        return FindNextIndex( FindIndex(c) );
+    }
+
+    public static int FindNextIndex(int index) {
+        index++;
+
+        if (index >= colors().Count) {
+            index = 0;
+        }
+
+        return index;
+    }
+
+    public static int FindIndex(Color c) {
+        return ColorManager.colors().IndexOf(c);
+    }
+
+    public static int GetRandomColorIndex() {
+        return Random.Range(0, colors().Count);
     }
 }

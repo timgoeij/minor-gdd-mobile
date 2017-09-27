@@ -5,52 +5,130 @@ using UnityEngine;
 
 public class ScoreManager : MonoBehaviour {
 
-	public static float totalSeconds = 0;
 
 	[SerializeField]
-	private GameObject _timeText;
-	private bool _timerStarted = false;
+	private GameObject _scoreText;
 
-	// Use this for initialization
-	void Start () {
+	private int _totalScore = 0;
+	private int _onScreenScore = 0;
+	private float _timeBetweenScoreUpdates = 0;
+	private float _timeSinceLastScoreUpdate = 0;
 
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		if(_timerStarted) {
-			if ( ! _timeText.activeInHierarchy) {
-				_timeText.SetActive(true);
-			}
-			UpdateTime();
+	private int _scoreSizeOffset = 0;
+
+	private float _lastTimeSincePointsAdded = 0;
+	private int _multiplier = 1;
+
+	public int multiplier { 
+		get {
+			return _multiplier;
+		}
+
+		set {
+			_multiplier = value;
 		}
 	}
 
-	public void StartTimer() {
-		_timerStarted = true;
-		totalSeconds = 0;
-		_timeText.SetActive(true);
+	// Use this for initialization
+	void Start () {
+		_timeBetweenScoreUpdates = GetTimeBetweenScoreUpdates();
+	}
+	
+	private float GetTimeBetweenScoreUpdates() {
+		return UnityEngine.Random.Range(0f, 0.03f);
 	}
 
-	public void StopTimer() {
-		_timerStarted = false;	
+	// Update is called once per frame
+	void Update () {
+		if(FindObjectOfType<GameController>().gameStarted  && ! _scoreText.activeInHierarchy) {
+				_scoreText.SetActive(true);
+		}
+		
+		if (_scoreSizeOffset < 50 && FindObjectOfType<ScoreManager>().GetScore() % 100 == 0) {
+			_scoreSizeOffset += 5;
+		}
+
+		UpdateScore();
 	}
 
-	public static double GetRoundedScore() {
-		return Math.Round(ScoreManager.totalSeconds, 1);
+	public void AddPoints(int points) {
+		int totalPoints = points * _multiplier;
+
+		FindObjectOfType<ScoreNotifierManager>().SetText( points, _multiplier, totalPoints );
+
+		AddBonusPoints();
+
+		_totalScore += totalPoints;
+		_lastTimeSincePointsAdded = Time.time;
+
+		
 	}
 
-	public static string GetRoundedScoreAsString() {
-		return ScoreManager.GetRoundedScore().ToString();
+	public void AddBonusPoints() {
+		AddQuickieBonus();
 	}
 
-	void UpdateTime() {
-		ScoreManager.totalSeconds += Time.deltaTime;
+	public void AddQuickieBonus() {
+		if ((Time.time - _lastTimeSincePointsAdded) <= 0.39f) {
+			int pointsToAdd = 15;
+			string message = "Too fast for love...";
 
-		_timeText.GetComponent<UnityEngine.UI.Text>().text = Math.Round(ScoreManager.totalSeconds, 1).ToString();
+			_totalScore += pointsToAdd;
+			FindObjectOfType<ScoreNotifierManager>().SetBonusText(pointsToAdd, message);
+		} else if ((Time.time - _lastTimeSincePointsAdded) <= 0.69f) {
+			int pointsToAdd = 10;
+			string message = "Quickie!";
+
+			_totalScore += pointsToAdd;
+			FindObjectOfType<ScoreNotifierManager>().SetBonusText(pointsToAdd, message);
+		} else if (Time.time - _lastTimeSincePointsAdded < 0.99f) {
+			int pointsToAdd = 5;
+
+			_totalScore += pointsToAdd;
+			string message = "In a hurry!";
+
+			FindObjectOfType<ScoreNotifierManager>().SetBonusText(pointsToAdd, message);
+		}
+	}
+
+	public void AddBonusPoints(int points, string message) {
+
+		FindObjectOfType<ScoreNotifierManager>().SetBonusText( points, message );
+		_totalScore += points;
+	}
+
+	void UpdateScore() {
+		if (_timeSinceLastScoreUpdate < _timeBetweenScoreUpdates) {
+			_timeSinceLastScoreUpdate += Time.unscaledDeltaTime;
+			return;
+		}
+
+		ShowScore();
  	}
 
-	 public static float TotalTime() {
-		 return ScoreManager.totalSeconds;
+	private void ShowScore() {
+		if (_totalScore > _onScreenScore) {
+			if (((_totalScore - _onScreenScore) / 10) > 2) {
+				_onScreenScore += (int) Math.Round( (double) ((_totalScore - _onScreenScore) / 10));
+			} else {
+				_onScreenScore++;
+			}
+
+			
+			FindObjectOfType<SoundEffectManager>().PlayPoints();
+			_scoreText.GetComponent<UnityEngine.UI.Text>().fontSize = UnityEngine.Random.Range(75, 125) + _scoreSizeOffset;
+			_scoreText.GetComponent<UnityEngine.UI.Text>().text = _onScreenScore.ToString();
+
+			_scoreText.GetComponent<RectTransform>().rotation = Quaternion.Euler(0,0, UnityEngine.Random.Range(-10, 10));
+		} else {
+			FindObjectOfType<SoundEffectManager>().StopPoints();
+		}
+
+		_timeSinceLastScoreUpdate = 0;
+		_timeBetweenScoreUpdates = GetTimeBetweenScoreUpdates();
+	}
+
+	 public int GetScore() {
+		 return _totalScore;
 	 } 
 }

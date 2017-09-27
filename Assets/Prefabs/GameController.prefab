@@ -53,4 +53,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainMenu: {fileID: 0}
   gameOver: {fileID: 0}
-  previousScore: 0
+  _gameStarted: 0
+  pauseMenu: {fileID: 0}
+  colorOrder: {fileID: 0}
+  menuOpen: 1
+  _notActive: 0
+  _socialmedia: {fileID: 0}

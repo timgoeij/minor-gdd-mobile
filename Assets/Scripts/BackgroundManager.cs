@@ -4,12 +4,9 @@ using UnityEngine;
 
 public class BackgroundManager : MonoBehaviour {
 
-	[SerializeField]
-	private GameObject _bgItem;
-	private List<GameObject> _backgroundItems = new List<GameObject>();
+	private IBackgroundPattern _pattern = null;
 
-	private int _bgSpawnChance = 25;
-	private int _maxBgItems = 50;
+
 
 	// Use this for initialization
 	void Start () {
@@ -17,26 +14,17 @@ public class BackgroundManager : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		CreateBackgroundItems();
-		CleanBackgroundItems();
-	}
-
-	private void CreateBackgroundItems() {
-		if (_backgroundItems.Count < _maxBgItems && UnityEngine.Random.Range(0, _bgSpawnChance) == 0) {
-			GameObject item = Instantiate(_bgItem);
-			_backgroundItems.Add(item);
+	void FixedUpdate () {
+		if (_pattern != null) {
+			_pattern.Update();
 		}
 	}
 
-	private void CleanBackgroundItems() {
-		for(int i = 0; i < _backgroundItems.Count; i++) {
-			GameObject item = _backgroundItems[i];
-
-			if (CameraScreen.ObjectIsBehindCamera(item.transform)) {
-				_backgroundItems.Remove(item);
-				Destroy(item);
-			}
+	public void SetPattern(IBackgroundPattern pattern) {
+		if (_pattern != null) {
+			_pattern.Stop();
 		}
+
+		_pattern = pattern;
 	}
 }

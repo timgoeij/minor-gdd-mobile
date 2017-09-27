@@ -2,46 +2,82 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class ColorChangeableObject : MonoBehaviour {
+public abstract class ColorChangeableObject : MonoBehaviour, IInputTrigger {
+    protected int lastColor;
     protected int currentColor;
-    private SpriteRenderer _renderer;
 
-    private LevelManager _levelManager;
-    
-    private List<Color> _availableColors;
+    private bool sameColorAsPlayer = false;
+
+    public bool SameColorAsPlayer
+    {
+        get { return sameColorAsPlayer; }
+        set { sameColorAsPlayer = value; }
+    }
 
     public virtual void Start ()
     {
-        _availableColors = ColorManager.colors();
-        _renderer = GetComponent<SpriteRenderer>();
-        _levelManager = FindObjectOfType<LevelManager>();
-
-        if (_levelManager.forcedColor != null) {
-            SetColor( (int) _levelManager.forcedColor );
-        } else {
-            SetColor( UnityEngine.Random.Range(0, (ColorManager.colors().Count - 1)) );
+        if (transform.GetComponentInParent<RotationCube>() != null && transform.GetSiblingIndex() > 0)
+        {
+            Invoke("ForceSameColorAsOther", .1f);
         }
-        
-	}
+    }
 
-    public void ChangeColor(bool startUp = false)
+    public virtual void Trigger() {
+        ChangeColor();
+    }
+
+    public void ChangeColor()
     {
-        int cc = (currentColor + 1);
+        if (sameColorAsPlayer)
+        {
+            lastColor = currentColor;
 
-        if (cc > (_availableColors.Count - 1)) {
-            cc = 0;
+            SetColor(FindObjectOfType<PlayerScript>().GetCurrentColor());
         }
+        else
+        {
+            int cc;
 
-        SetColor( cc );
+            if (lastColor > 0)
+            {
+                cc = lastColor;
+                lastColor = 0;
+            }
+            else
+            {
+                cc = (currentColor + 1);
+            }
+
+            if (cc > (ColorManager.colors().Count - 1))
+            {
+                cc = 0;
+            }
+
+            SetColor(cc);
+        }
     }
     
-    private void SetColor(int color) {
+    public virtual void SetColor(int color) {
         currentColor = color;
-        _renderer.color = GetCurrentColor();
+        GetComponent<SpriteRenderer>().color = GetCurrentColor();
+    }
+
+    private void SetColor(Color color)
+    {
+        GetComponent<SpriteRenderer>().color = color;
     }
 
     public Color GetCurrentColor()
     {
-        return _availableColors[currentColor];
+        return ColorManager.colors()[currentColor];
+    }
+
+    private void ForceSameColorAsOther()
+    {
+        if (transform.GetSiblingIndex() != 0)
+        {
+            ColorChangeableObject otherLaser = transform.parent.GetChild(0).GetComponent<ColorChangeableObject>();
+            SetColor(ColorManager.colors().IndexOf(otherLaser.GetCurrentColor()));
+        }
     }
 }
