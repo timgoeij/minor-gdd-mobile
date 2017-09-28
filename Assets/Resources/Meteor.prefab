@@ -38,7 +38,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4983566086804600}
   - component: {fileID: 96152811123935272}
-  - component: {fileID: 114162824831057784}
   m_Layer: 0
   m_Name: Trail
   m_TagString: Untagged
@@ -53,7 +52,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1441430070852420}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.4404306, y: -11.973261, z: 10}
+  m_LocalPosition: {x: 95.0188, y: -16.57, z: 10}
   m_LocalScale: {x: 4, y: 4, z: 4}
   m_Children:
   - {fileID: 4983566086804600}
@@ -179,17 +178,6 @@ TrailRenderer:
     generateLightingData: 0
   m_MinVertexDistance: 0.1
   m_Autodestruct: 0
---- !u!114 &114162824831057784
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1445106709319254}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24445e93dd0de744e82a7993300ecfb3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114393797681291414
 MonoBehaviour:
   m_ObjectHideFlags: 1

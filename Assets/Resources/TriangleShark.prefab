@@ -20,11 +20,11 @@ GameObject:
   m_Component:
   - component: {fileID: 4033925515600978}
   - component: {fileID: 212893717410336950}
-  - component: {fileID: 60597500684863022}
+  - component: {fileID: 60765911611018654}
   - component: {fileID: 114571567084564910}
   m_Layer: 0
   m_Name: TriangleShark
-  m_TagString: Untagged
+  m_TagString: Shark
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -36,13 +36,13 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1931853791418582}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.99, y: 0.37, z: 10}
+  m_LocalPosition: {x: -10, y: -10, z: 10}
   m_LocalScale: {x: 4, y: 4, z: 4}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!60 &60597500684863022
+--- !u!60 &60765911611018654
 PolygonCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -83,6 +83,7 @@ MonoBehaviour:
   _pointObject: {fileID: 1467352051772922, guid: 88b6dd97022134779ad6df070a6097e2,
     type: 2}
   _explosion: {fileID: 1442058636516340, guid: e35372eb8e599451dbdeb97b160bb4df, type: 2}
+  currentBehaviour: 2
 --- !u!212 &212893717410336950
 SpriteRenderer:
   m_ObjectHideFlags: 1

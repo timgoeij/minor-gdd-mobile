@@ -13,6 +13,7 @@ TagManager:
   - SocialMedia
   - Floor
   - Wall
+  - Shark
   layers:
   - Default
   - TransparentFX
