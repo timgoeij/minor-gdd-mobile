@@ -1,4 +1,8 @@
-﻿using System.Collections;
+﻿using ColourRun.Cameras;
+using ColourRun.Controller;
+using ColourRun.Interfaces;
+using ColourRun.Managers;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -8,19 +12,9 @@ public class PlayerScript : ColorChangeableObject, IHitable {
 	private float maxSpeed = 0.7f;
 	private float _speed = 0;
     private bool secondChance = false;
-
-	private bool _isDead = false;
-
-	[SerializeField]
-	private GameObject _explosion;
-
-	[SerializeField]
-	private GameObject _blood;
-
-	[SerializeField]
-	private GameObject _spark;
-
-	[SerializeField]
+    private bool tutorialEventAlreadyActivated = false;
+    private TutorialManager tm;
+    private bool _isDead = false;
 	private bool _grounded = true;
 
 	public bool isGrounded {
@@ -46,7 +40,6 @@ public class PlayerScript : ColorChangeableObject, IHitable {
         set { secondChance = value; }
     }
 
-	[SerializeField]
 	private bool _touchedWall = false;
 
 	public bool touchedWall {
@@ -61,22 +54,53 @@ public class PlayerScript : ColorChangeableObject, IHitable {
 
 	private GameObject _nearDeath = null;
 
+    public GameObject NearDeath
+    {
+        get { return _nearDeath; }
+    }
+
 	private GameObject _deathAlerted = null;
+
+	private TrailRenderer _trailRenderer;
+	private SoundEffectManager _soundManager;
+	private Rigidbody2D _rigidbody;
+
+	private CameraScript _cameraScript;
+
+	private Transform _transform;
+	
+	private TimeManager _timeManager;
+
+	private SpriteRenderer _renderer;
+
+	private ScoreManager _scoreManager;
+
+	void Awake() {
+		_trailRenderer = GetComponentInChildren<TrailRenderer>();
+		_soundManager = FindObjectOfType<SoundEffectManager>();
+		_rigidbody = GetComponent<Rigidbody2D>();
+		_cameraScript = Camera.main.GetComponent<CameraScript>();
+		tm = FindObjectOfType<TutorialManager>();
+		_transform = transform;
+		_timeManager = FindObjectOfType<TimeManager>();
+		_renderer = GetComponent<SpriteRenderer>();
+		_scoreManager = FindObjectOfType<ScoreManager>();
+	}
 
 	public override void Start()
 	{
 		base.Start();
 		SetColor( UnityEngine.Random.Range(0, (ColorManager.colors().Count)) );
-		SetTrailColor();
+		SetTrailColor(); 
 	}
 	
 	private void SetTrailColor() {
-		if (GetComponentInChildren<TrailRenderer>() != null) {
+		if (_trailRenderer != null) {
 			Color c = GetCurrentColor();
 			c.a = 0.5f;
 
-			GetComponentInChildren<TrailRenderer>().startColor = c;
-			GetComponentInChildren<TrailRenderer>().endColor = c;
+			_trailRenderer.startColor = c;
+			_trailRenderer.endColor = c;
 		}
 	}
 
@@ -85,39 +109,70 @@ public class PlayerScript : ColorChangeableObject, IHitable {
 			return;
 		}
 
+		CheckTutorialDistance();
 		CheckGrounded();
 		CheckNearDeath();
 
 		if (_nearDeath != null) {
-
 			if (_deathAlerted == null || _nearDeath != _deathAlerted) {
-				FindObjectOfType<SoundEffectManager>().PlayAlert();
+				_soundManager.PlayAlert();
 				_deathAlerted = _nearDeath;
-			}
-			
-			
-			Time.timeScale = 0.75f;
-
-			for(int i = 0; i < 15; i++) {
-				GameObject spark = Instantiate(_spark);
 				Vector3 sparkPos = transform.position;
-				sparkPos.z = UnityEngine.Random.Range(3, 5);
-				spark.transform.position = sparkPos;
+				Spark(sparkPos, 30);
 			}
-	
-			
-			
-		} else {
-			Time.timeScale = 1;
+
+			if (tm.IsTutorialActive
+					&& tm.IsFirstMultiplierActive && tutorialEventAlreadyActivated)
+			{
+						Time.timeScale = 0;
+						tutorialEventAlreadyActivated = false;
+			}
+			else
+			{
+					Time.timeScale = 0.75f;
+			}
+		}
+		else
+		{
+				if (!tm.IsTutorialActive)
+						Time.timeScale = 1;
 		}
 
-		CheckWallJump();
-		
+    CheckWallJump();
 		Move();
 	}
 
+    private void CheckTutorialDistance()
+    {
+        if (!tm.IsTutorialActive)
+            return;
+
+        if (!tm.IsFirstColorActive)
+            return;
+
+        RaycastHit2D tutorialHit = Physics2D.Raycast(transform.position, Vector2.right, 10);
+
+        if (tutorialHit.collider != null && tutorialHit.collider.GetComponent<Laser>() != null && !tutorialEventAlreadyActivated)
+        {
+            tutorialEventAlreadyActivated = true;
+            Time.timeScale = 0;
+        }
+
+    }
+
+    private void Spark(Vector3 pos, int amount) {
+		for(int i = 0; i < amount; i++) {
+			GameObject spark = PoolManager.GetItem("Spark");
+			if (spark) {
+				pos.z = 21;
+				spark.transform.position = pos;
+				spark.SetActive(true);
+			}
+		}
+	}
+
 	private void Move() {
-		transform.position = Vector3.MoveTowards(transform.position, transform.position + new Vector3(1, 0, 0), speed);
+		_transform.position = Vector3.MoveTowards(transform.position, transform.position + new Vector3(1, 0, 0), speed);
 	}
 
 	private void CheckWallJump() {
@@ -125,20 +180,23 @@ public class PlayerScript : ColorChangeableObject, IHitable {
 		RaycastHit2D leftHit = Physics2D.Raycast(transform.position, Vector2.left, 1.2f);
 
 		if (rightHit.collider != null && rightHit.collider.tag == "Wall" || leftHit.collider != null && leftHit.collider.tag == "Wall" ) {
-			_speed *= -1;
-			_touchedWall = true;
-			GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, 0);
-			Camera.main.GetComponent<CameraScript>().Shake(0.5f);
-			FindObjectOfType<TimeManager>().FreezeFrame();
-
-			for(int i = 0; i < 30; i++) {
-					GameObject spark = Instantiate(_spark);
-					Vector3 sparkPos = (rightHit.collider != null ) ? rightHit.point : leftHit.point;
-					sparkPos.z = UnityEngine.Random.Range(3, 5);
-					spark.transform.position = sparkPos;
+			
+			if (rightHit.collider != null && _speed > 0 || leftHit.collider != null && _speed < 0) {
+				_speed *= -1;
 			}
 
-			FindObjectOfType<SoundEffectManager>().PlayJump();
+			_touchedWall = true;
+			
+			_rigidbody.velocity = new Vector2(_rigidbody.velocity.x, 0);
+			_cameraScript.Shake(0.5f);
+			
+			_timeManager.FreezeFrame();
+
+
+			Vector3 sparkPos = (rightHit.collider != null ) ? rightHit.point : leftHit.point;
+			Spark(sparkPos, 30);
+
+			_soundManager.PlayJump();
 		}
 	}
 
@@ -150,21 +208,18 @@ public class PlayerScript : ColorChangeableObject, IHitable {
 
 		if (hit.collider != null && hit.collider.tag == "Floor") {
 			if ( ! _grounded) {
-				Camera.main.GetComponent<CameraScript>().Shake(0.3f);
+				_cameraScript.Shake(0.3f);
 			}
 
 			_grounded = true;
 			_touchedWall = false;
 
 			if (! prevState) {
-				FindObjectOfType<SoundEffectManager>().PlayLanding();
+				_soundManager.PlayLanding();
 
-				for(int i = 0; i < 15; i++) {
-					GameObject spark = Instantiate(_spark);
-					Vector3 sparkPos = hit.point;
-					sparkPos.z = UnityEngine.Random.Range(3, 5);
-					spark.transform.position = sparkPos;
-				}				
+				Vector3 sparkPos = hit.point;
+				Spark(sparkPos, 15);
+
 			}
 
 		} else {
@@ -174,7 +229,7 @@ public class PlayerScript : ColorChangeableObject, IHitable {
 
 	private void CheckNearDeath() {
 
-		RaycastHit2D[] hit = Physics2D.CircleCastAll( transform.position, 1f, Vector2.right, 1.5f);
+		RaycastHit2D[] hit = Physics2D.CircleCastAll( transform.position, 1f, (speed > 0) ? Vector2.right : Vector2.left, 1.5f);
 
 		IEnumerable<RaycastHit2D> hits = hit.Where(
 		c => c.collider.GetComponent<Laser>() != null &&
@@ -187,7 +242,6 @@ public class PlayerScript : ColorChangeableObject, IHitable {
 		} else if (_nearDeath != null && _nearDeath.transform.position.x < transform.position.x) {
 			_nearDeath = null;
 		}
-
 	}
 
 	public void Hit() {
@@ -207,24 +261,34 @@ public class PlayerScript : ColorChangeableObject, IHitable {
 		if (_isDead) {
 			return;
 		}
-
+		_rigidbody.gravityScale = 0;
+		_rigidbody.velocity = new Vector2(0,0);
+		
 		FindObjectOfType<BackgroundMusicManager>().StartPitch(-0.5f, 0.5f);
-		FindObjectOfType<TimeManager>().SetSlomo(0.5f, 1.5f);
-		GetComponent<SpriteRenderer>().sprite = null;
-		gameObject.GetComponentInChildren<TrailRenderer>().gameObject.SetActive(false);
-    FindObjectOfType<GameController>().EndGame();
+		_timeManager.SetSlomo(0.5f, 1.5f);
+		
+		_renderer.sprite = null;
+		
+		_trailRenderer.gameObject.SetActive(false);
+    	
 
-		Camera.main.GetComponent<CameraScript>().Shake();
-		FindObjectOfType<SoundEffectManager>().PlayDeath();
+		_cameraScript.Shake();
+		_soundManager.PlayDeath();
 
-		GameObject explosion = Instantiate(_explosion);
-		explosion.transform.position = transform.position;
+		GameObject explosion = PoolManager.GetItem("Explosion");
+
+		if (explosion != null) {
+			explosion.transform.position = transform.position;
+			explosion.SetActive(true);
+		}
 
 		FindObjectOfType<GameController>().EndGame();
 
-		for(int i = 0; i < 500; i++) {
-			GameObject point = Instantiate(_blood);
-			point.GetComponent<SpriteRenderer>().color = ColorManager.colors()[ UnityEngine.Random.Range(0, ColorManager.colors().Count) ];
+		List<GameObject> bloodSpatters = PoolManager.GetAll("Blood");
+		
+		foreach(GameObject o in bloodSpatters) {
+			o.GetComponent<SpriteRenderer>().color = ColorManager.colors()[ UnityEngine.Random.Range(0, ColorManager.colors().Count) ];
+			o.SetActive(true);
 		}
 
 		_isDead = true;;
@@ -240,28 +304,28 @@ public class PlayerScript : ColorChangeableObject, IHitable {
 
 	public void OnScore(GameObject obstacle) {
 		if (! _grounded) {
-			FindObjectOfType<ScoreManager>().AddBonusPoints(25, "Superman!");
+			_scoreManager.AddBonusPoints(25, "Superman!");
 		}
 	}
 
 	public void SetMultipliers(GameObject obstacle) {
 		if (_nearDeath != null && _nearDeath == obstacle) {
-			FindObjectOfType<ScoreManager>().multiplier++;
+			_scoreManager.multiplier++;
 		} else {
-			FindObjectOfType<ScoreManager>().multiplier = 1;
+			_scoreManager.multiplier = 1;
 		}
 	}
 
 	public override void SetColor(int color) {
 		base.SetColor(color);
 
-		if (gameObject.GetComponentInChildren<TrailRenderer>() != null) {
+		if (_trailRenderer != null) {
 
 				Color trailColor = GetCurrentColor();
 				trailColor.a = 0.5f;
 
-				gameObject.GetComponentInChildren<TrailRenderer>().startColor = trailColor;
-				gameObject.GetComponentInChildren<TrailRenderer>().endColor = trailColor;
+				_trailRenderer.startColor = trailColor;
+				_trailRenderer.endColor = trailColor;
 		}
 	}
 }

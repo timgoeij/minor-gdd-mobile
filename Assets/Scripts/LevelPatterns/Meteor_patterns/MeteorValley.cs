@@ -25,7 +25,7 @@ public class MeteorValley : LevelPattern
         if (_timeBetweenObstacles == -1)
             _timeBetweenObstacles = 0;
         else if (_timeBetweenObstacles == 0)
-            _timeBetweenObstacles = 11;
+            _timeBetweenObstacles = 13;
 
         return _timeBetweenObstacles;
     }
@@ -37,6 +37,7 @@ public class MeteorValley : LevelPattern
         {
             GameObject meteorSpawner = _availableObstables[i];
             meteorSpawner.GetComponent<MeteorSpawner>().SpawnMode = (MeteorSpawner.MeteorSpawnMode) i;
+            meteorSpawner.GetComponent<MeteorSpawner>().MaxDuration = _timeBetweenObstacles - 4;
         }
 
         _timeBetweenObstacles = -1;

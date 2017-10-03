@@ -40,7 +40,7 @@ public class ScoreManager : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if(FindObjectOfType<GameController>().gameStarted  && ! _scoreText.activeInHierarchy) {
+		if(FindObjectOfType<ColourRun.Controller.GameController>().gameStarted  && ! _scoreText.activeInHierarchy) {
 				_scoreText.SetActive(true);
 		}
 		

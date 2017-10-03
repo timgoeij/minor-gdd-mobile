@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MeteorSpawner : MonoBehaviour, IObstacle {
+public class MeteorSpawner : MonoBehaviour, ColourRun.Interfaces.IObstacle
+{
 
     [SerializeField]
     private GameObject meteorPrefab;
@@ -21,6 +22,11 @@ public class MeteorSpawner : MonoBehaviour, IObstacle {
     {
         get { return spawnMode; }
         set { spawnMode = value; }
+    }
+
+    public float MaxDuration
+    {
+        set { maxSpawnTime = value; }
     }
 
     private Transform player;
@@ -87,7 +93,7 @@ public class MeteorSpawner : MonoBehaviour, IObstacle {
     private void LaunchMeteor()
     {
         Vector3 targetPos = player.position;
-        targetPos.x += Random.Range(25, 50);
+        targetPos.x += Random.Range(25, 65);
 
         Vector3 directon = targetPos - new Vector3(transform.position.x + 100, transform.position.y, transform.position.z);
         directon.Normalize();
@@ -99,7 +105,7 @@ public class MeteorSpawner : MonoBehaviour, IObstacle {
         meteor.GetComponent<Meteor>().SetTarget(directon);
     }
 
-     float IObstacle.GetYOffset()
+     float ColourRun.Interfaces.IObstacle.GetYOffset()
     {
         return 25;
     }

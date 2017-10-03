@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using ColourRun.Interfaces;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,5 +19,6 @@ public class BackgroundManager : MonoBehaviour {
 		}
 
 		_pattern = pattern;
+		_pattern.Init();
 	}
 }

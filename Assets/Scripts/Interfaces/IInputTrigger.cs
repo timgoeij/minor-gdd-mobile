@@ -2,6 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IInputTrigger {
-	void Trigger();
+namespace ColourRun.Interfaces
+{
+    public interface IInputTrigger
+    {
+        void Trigger();
+    }
+
 }
+

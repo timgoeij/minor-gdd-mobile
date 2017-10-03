@@ -1,189 +1,77 @@
-﻿using System.Collections;
+﻿using ColourRun.Cameras;
+using ColourRun.Interfaces;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TriangleShark : Laser, IObstacle {
-
-    private float speed = 0;
-    private float maxSpeed = 0f;
-
-    [SerializeField]
-    private bool alreadyChanged = false;
-
-    [SerializeField]
-    private bool alreadyCollide = false;
-
-    [SerializeField]
-    private bool rotated;
-
-    public bool Rotated
-    {
-        get { return rotated; }
-        set { rotated = value; }
+public class TriangleShark : Laser, IObstacle
+{
+    private float _maxSpeed = 0;
+    public float MaxSpeed {
+        get { return _maxSpeed; }
+        set { _maxSpeed = value; }
     }
 
-    private enum LaserBehaviour
-    {
-        Right,
-        Left,
-        Idle,
-        Death,
-    }
-
-    [SerializeField]
-    private LaserBehaviour currentBehaviour = LaserBehaviour.Idle;
-
-    private Vector3 direction = Vector3.zero;
-
-    private float rayXRightPos;
-    private float rayYRightPos;
-
-    private float rayXLeftPos;
-    private float rayYLeftPos;
-
-
-    private Vector3 rayDirection;
-
-
-    public float MaxSpeed
-    {
-        get { return maxSpeed; }
-        set { maxSpeed = value; }
-    }
-
-    // Use this for initialization
-    public override void Start () {
-
-        if (maxSpeed == 0)
-            maxSpeed = Random.Range(0.15f, 0.20f);
-
+    public bool Rotated = false;
+    public override void Start() {
+        MaxSpeed = (MaxSpeed != 0) ? MaxSpeed : Random.Range(0.15f, 0.20f);
         base.Start();
-		
-	}
-	
-	// Update is called once per frame
-	public override void FixedUpdate () {
-
-        rayXRightPos = rotated ? -GetComponent<SpriteRenderer>().bounds.extents.x * 0.5f : GetComponent<SpriteRenderer>().bounds.extents.x;
-        rayYRightPos = rotated ? -GetComponent<SpriteRenderer>().bounds.extents.y : GetComponent<SpriteRenderer>().bounds.extents.y * 0.5f;
-
-        rayXLeftPos = rotated ? GetComponent<SpriteRenderer>().bounds.extents.x * 0.5f : GetComponent<SpriteRenderer>().bounds.extents.x;
-        rayYLeftPos = rotated ? GetComponent<SpriteRenderer>().bounds.extents.y : GetComponent<SpriteRenderer>().bounds.extents.y * 0.5f;
-
-        rayDirection =  rotated && transform.eulerAngles.y == 270 ? transform.TransformDirection(Vector3.down) : transform.TransformDirection(Vector3.up);
-
-        if (_isHit)
-        {
+    }
+    public override void FixedUpdate () {
+        DestroyCheck();
+        if (_isHit) {
             Color c = GetComponent<SpriteRenderer>().color;
             c.a = 0.5f;
             GetComponent<SpriteRenderer>().color = c;
         }
+        CheckTurn(); 
+        Move();
+    }
+    private void CheckTurn() {
+        Vector3 bottomleft = new Vector3( 
+            transform.position.x - GetComponent<SpriteRenderer>().bounds.extents.x, 
+            transform.position.y - GetComponent<SpriteRenderer>().bounds.extents.y,
+            0
+        );
 
-        if (speed <= maxSpeed)
-            speed += 0.1f;
+        Vector3 topRight = new Vector3( 
+            transform.position.x + GetComponent<SpriteRenderer>().bounds.extents.x, 
+            transform.position.y + GetComponent<SpriteRenderer>().bounds.extents.y,
+            0
+        );
 
-        RaycastHit2D rightDownHit = Physics2D.Raycast(new Vector2(transform.position.x + rayXRightPos, 
-            transform.position.y - rayYRightPos), rayDirection, 0.96f);
+        Collider2D leftHit  = Physics2D.Raycast( bottomleft, (Rotated) ? Vector2.right : Vector2.up,   transform.localScale.y ).collider;
+        Collider2D rightHit = Physics2D.Raycast( topRight,   (Rotated) ? Vector2.left  : Vector2.down, transform.localScale.y ).collider;
+        leftHit = (leftHit != null && (Rotated && leftHit.tag == "Wall" || ! Rotated && leftHit.tag == "Floor" || leftHit.GetComponent<Laser>()  != null )) ? leftHit : null; 
+        rightHit = (rightHit != null && (Rotated && rightHit.tag == "Wall" || ! Rotated && rightHit.tag == "Floor" || rightHit.GetComponent<Laser>()  != null )) ? rightHit : null; 
 
-        RaycastHit2D leftDownHit = Physics2D.Raycast(new Vector2(transform.position.x - rayXLeftPos,
-            transform.position.y - rayYLeftPos), rayDirection, 0.96f);
-
-        RaycastHit2D rightHit = Physics2D.Raycast(new Vector2(transform.position.x + GetComponent<SpriteRenderer>().bounds.extents.x,
-            transform.position.y - GetComponent<SpriteRenderer>().bounds.extents.y * 0.5f), transform.TransformDirection(Vector2.right), 1f);
-        RaycastHit2D leftHit = Physics2D.Raycast(new Vector2(transform.position.x - GetComponent<SpriteRenderer>().bounds.extents.x,
-            transform.position.y - GetComponent<SpriteRenderer>().bounds.extents.y * 0.5f), transform.TransformDirection(Vector2.left), 1f);
-
-        /*Debug.DrawRay(new Vector2(transform.position.x + rayXRightPos,
-            transform.position.y - rayYRightPos), rayDirection, Color.blue);*/
-
-        Debug.DrawRay(new Vector2(transform.position.x - rayXLeftPos,
-            transform.position.y - rayYLeftPos), rayDirection, Color.red);
-
-
-        if (currentBehaviour != LaserBehaviour.Idle)
+        if ((transform.rotation.eulerAngles.z != 270 && leftHit  == null && MaxSpeed > 0) ||
+            (transform.rotation.eulerAngles.z != 270 && rightHit == null && MaxSpeed < 0) ||  
+            (transform.rotation.eulerAngles.z == 270 && leftHit  == null && MaxSpeed < 0) ||  
+            (transform.rotation.eulerAngles.z == 270 && rightHit == null && MaxSpeed > 0) ||
+            (leftHit  != null && leftHit.GetComponent<Laser>()  != null) ||
+            (rightHit != null && rightHit.GetComponent<Laser>() != null))
         {
-            if (rightDownHit.collider != null && leftDownHit.collider != null)
-                alreadyChanged = false;
-
-            if (rightHit.collider == null && leftHit.collider == null)
-                alreadyCollide = false;
-
-            if (rightHit.collider != null && !alreadyCollide && currentBehaviour != LaserBehaviour.Death)
-            {
-                ChangeBehaviour();
-
-                if (rightHit.collider.GetComponent<TriangleShark>() != null)
-                    rightHit.collider.GetComponent<TriangleShark>().ChangeBehaviour();
-
-                alreadyCollide = true;
-            }
-            else if (leftHit.collider != null && !alreadyCollide && currentBehaviour != LaserBehaviour.Death)
-            {
-                ChangeBehaviour();
-
-                if (leftHit.collider.GetComponent<TriangleShark>() != null)
-                    leftHit.collider.GetComponent<TriangleShark>().ChangeBehaviour();
-
-                alreadyCollide = true;
-            }
-
-            if (leftDownHit.collider == null && rightDownHit.collider == null && CameraScreen.ObjectIsBehindCamera(transform))
-            {
-                Destroy(gameObject);
-            }
-            else if(leftDownHit.collider == null && rightDownHit.collider == null && currentBehaviour != LaserBehaviour.Death)
-            {
-                ChangeBehaviour();
-            }
-            else if (leftDownHit.collider == null && !alreadyChanged && currentBehaviour != LaserBehaviour.Death)
-            {
-                ChangeBehaviour();
-                alreadyChanged = true;
-            }
-            else if(rightDownHit.collider == null && !alreadyChanged && currentBehaviour != LaserBehaviour.Death)
-            {
-                ChangeBehaviour();
-                alreadyChanged = true;
-            }
-
-            if (currentBehaviour == LaserBehaviour.Left)
-                direction = Vector3.left;
-            else if (currentBehaviour == LaserBehaviour.Right)
-                direction = Vector3.right;
-            else
-                direction = Vector3.zero;
-
-            transform.position = Vector3.MoveTowards(transform.position, transform.position + transform.TransformDirection(direction), speed);
-        }
-        else
-        {
-            if (leftDownHit.collider != null || rightDownHit.collider != null)
-            {
-                currentBehaviour = (LaserBehaviour)Random.Range(0, 2);
-            }
+            MaxSpeed *= -1;
         }
     }
-
-    public void ChangeBehaviour()
-    {
-        if (currentBehaviour == LaserBehaviour.Left)
-            currentBehaviour = LaserBehaviour.Right;
-        else
-            currentBehaviour = LaserBehaviour.Left;
+    private void Move() {
+        transform.Translate( Vector2.left * MaxSpeed );
     }
-
-    public override void OnTriggerEnter2D(Collider2D collision)
-    {
+    private void DestroyCheck() {
+        if (CameraScreen.ObjectIsBehindCamera(transform)) {
+            Destroy(gameObject);
+        }
+    }
+    public override void OnTriggerEnter2D(Collider2D collision) {
+        if (collision.CompareTag("Player")) {
+            MaxSpeed = 0;
+        }
+        
         base.OnTriggerEnter2D(collision);
-
-        if (collision.CompareTag("Player"))
-        {
-            currentBehaviour = LaserBehaviour.Death;
-        }
     }
-
     float IObstacle.GetYOffset()
     {
-        return 0;
+        return -(GetComponent<SpriteRenderer>().bounds.extents.y / 2);
     }
 }

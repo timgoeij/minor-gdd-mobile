@@ -4,16 +4,29 @@ using UnityEngine;
 
 public class HellDebris : MonoBehaviour {
 
+	private SpriteRenderer _renderer;
+	private Rigidbody2D _rigidbody;
+	private Transform _transform;
+	private GameObject _gameObject;
+
+	void Awake() {
+		_renderer = GetComponent<SpriteRenderer>();
+		_rigidbody = GetComponent<Rigidbody2D>();
+		_transform = transform;
+		_gameObject = gameObject;
+	}
+
 	// Use this for initialization
-	void Start () {
-		Color c = GetComponent<SpriteRenderer>().color;
+	void OnEnable () {
+		Color c = _renderer.color;
 		c.a = Random.Range(0.1f, 0.3f);
-		GetComponent<SpriteRenderer>().color = c;
-		GetComponent<Rigidbody2D>().AddForce( (Random.onUnitSphere * Random.Range(-30f, 30f)), ForceMode2D.Impulse );
+		
+		_renderer.color = c;
+		_rigidbody.AddForce( (Random.onUnitSphere * Random.Range(-30f, 30f)), ForceMode2D.Impulse );
 
 		float scale = Random.Range(1f, 2f);
 
-		transform.localScale = new Vector3(
+		_transform.localScale = new Vector3(
 			scale,
 			scale,
 			0  
@@ -21,13 +34,17 @@ public class HellDebris : MonoBehaviour {
 	}
 
 	void Update() {
-		Color c = GetComponent<SpriteRenderer>().color;
+		if ( ! _gameObject.activeInHierarchy) {
+			return;
+		}
+
+		Color c = _renderer.color;
 		c.a -= 0.01f;
 
 		if (c.a <= 0) {
-			Destroy(gameObject);
+			_gameObject.SetActive(false);
 		} else {
-			GetComponent<SpriteRenderer>().color = c;
+			_renderer.color = c;
 		}
 	}
 }

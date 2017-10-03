@@ -1,3 +1,8 @@
-public interface IObstacle {
-  float GetYOffset();
+namespace ColourRun.Interfaces
+{
+    public interface IObstacle
+    {
+        float GetYOffset();
+    }
 }
+

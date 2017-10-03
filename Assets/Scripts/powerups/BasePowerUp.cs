@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BasePowerUp : ColorChangeableObject, IPowerUp {
+public class BasePowerUp : ColorChangeableObject, ColourRun.Interfaces.IPowerUp
+{
 
     [SerializeField]
     protected float duration;

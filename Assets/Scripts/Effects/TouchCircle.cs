@@ -14,10 +14,24 @@ public class TouchCircle : MonoBehaviour {
 
 	private Vector3 _shrinkSpeed = new Vector3(5,5,0);
 
+	private SpriteRenderer _renderer;
+	private Transform _transform;
+
+	private GameObject _player;
+
+	private GameObject _gameObject;
+
+	void Awake() {
+		_renderer = GetComponent<SpriteRenderer>();
+		_transform = transform;
+		_gameObject = gameObject;
+		_player = GameObject.FindGameObjectWithTag("Player");
+	}
+
 	// Use this for initialization
-	void Start () {
-		GetComponent<SpriteRenderer>().color = GetColor();
-		transform.localScale = new Vector3(100, 100, 100);
+	void OnEnable () {
+		_renderer.color = GetColor();
+		_transform.localScale = new Vector3(100, 100, 100);
 	}
 
 	private Color GetColor() {
@@ -35,12 +49,16 @@ public class TouchCircle : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-			if (transform.localScale.x <= 0 || transform.localScale.y <= 0) {
-				Destroy(gameObject);
+			if ( ! _gameObject.activeInHierarchy) {
+				return;
 			}
 
-			transform.localScale -= _shrinkSpeed;
+			if (_transform.localScale.x <= 0 || _transform.localScale.y <= 0) {
+				_gameObject.SetActive(false);
+			}
 
-			transform.position = GameObject.FindGameObjectWithTag("Player").transform.position;
+			_transform.localScale -= _shrinkSpeed;
+
+			_transform.position = _player.transform.position;
 	}
 }

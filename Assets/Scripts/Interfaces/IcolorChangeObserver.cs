@@ -2,9 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IColorChangeObserver {
+namespace ColourRun.Interfaces
+{
+    public interface IColorChangeObserver
+    {
 
-    void AddChangeableObject(ColorChangeableObject changeableObject);
-    void RemoveChangeableObject(ColorChangeableObject changeableObject);
+        void AddChangeableObject(ColorChangeableObject changeableObject);
+        void RemoveChangeableObject(ColorChangeableObject changeableObject);
 
+    }
 }
+

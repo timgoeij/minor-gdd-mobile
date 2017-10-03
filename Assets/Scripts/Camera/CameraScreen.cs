@@ -17,4 +17,12 @@ public static class CameraScreen {
   public static bool ObjectIsBehindCamera(Transform t) {
     return (t.position.x + CameraScreen.width < Camera.main.transform.position.x);
   }
+
+  public static bool ObjectIsUnderCamera(Transform t) {
+    return (t.position.y + CameraScreen.height < Camera.main.transform.position.y);
+  }
+
+  public static bool ObjectIsAboveCamera(Transform t) {
+    return (t.position.y > Camera.main.transform.position.y + CameraScreen.height);
+  }
 }

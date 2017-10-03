@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4033925515600978}
   - component: {fileID: 212893717410336950}
   - component: {fileID: 60765911611018654}
-  - component: {fileID: 114571567084564910}
+  - component: {fileID: 114367720556928420}
   m_Layer: 0
   m_Name: TriangleShark
   m_TagString: Shark
@@ -69,7 +69,7 @@ PolygonCollider2D:
     - - {x: 0, y: 0.5}
       - {x: -0.4330127, y: -0.25000003}
       - {x: 0.43301272, y: -0.24999996}
---- !u!114 &114571567084564910
+--- !u!114 &114367720556928420
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -83,7 +83,7 @@ MonoBehaviour:
   _pointObject: {fileID: 1467352051772922, guid: 88b6dd97022134779ad6df070a6097e2,
     type: 2}
   _explosion: {fileID: 1442058636516340, guid: e35372eb8e599451dbdeb97b160bb4df, type: 2}
-  currentBehaviour: 2
+  Rotated: 1
 --- !u!212 &212893717410336950
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -113,8 +113,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1460890041
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 36cdd55182e5a4e84968cc4f416b8508, type: 3}
   m_Color: {r: 1, g: 0, b: 0, a: 1}

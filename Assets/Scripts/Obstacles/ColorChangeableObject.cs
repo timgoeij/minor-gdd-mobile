@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class ColorChangeableObject : MonoBehaviour, IInputTrigger {
+public abstract class ColorChangeableObject : MonoBehaviour, ColourRun.Interfaces.IInputTrigger
+{
     protected int lastColor;
     protected int currentColor;
 
@@ -12,6 +13,14 @@ public abstract class ColorChangeableObject : MonoBehaviour, IInputTrigger {
     {
         get { return sameColorAsPlayer; }
         set { sameColorAsPlayer = value; }
+    }
+
+    protected PlayerScript playerScript;
+    protected SpriteRenderer spriteRenderer;
+
+    public virtual void Awake() {
+        playerScript = FindObjectOfType<PlayerScript>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     public virtual void Start ()
@@ -32,7 +41,7 @@ public abstract class ColorChangeableObject : MonoBehaviour, IInputTrigger {
         {
             lastColor = currentColor;
 
-            SetColor(FindObjectOfType<PlayerScript>().GetCurrentColor());
+            SetColor(playerScript.GetCurrentColor());
         }
         else
         {

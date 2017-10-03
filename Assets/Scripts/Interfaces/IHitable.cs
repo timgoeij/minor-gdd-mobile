@@ -1,4 +1,9 @@
-public interface IHitable {
+namespace ColourRun.Interfaces
+{
+    public interface IHitable
+    {
 
-    void Hit();
+        void Hit();
+    }
 }
+

@@ -2,92 +2,118 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraScript : MonoBehaviour {
+namespace ColourRun.Cameras
+{
+    public class CameraScript : MonoBehaviour
+    {
 
-	private GameObject _target;
-	private float _lerp = 1f;
-	private bool _shake = false;
-	private float _shakeAmount = 0.7f;
-	private float _shakeDuration = 0.1f;
-	private float _shakeTime = 0;
-	// Use this for initialization
-	void Start () {
-		SetTarget("Player");
-	}
+        private GameObject _target;
+        private float _lerp = 1f;
+        private bool _shake = false;
+        private float _shakeAmount = 0.7f;
+        private float _shakeDuration = 0.1f;
+        private float _shakeTime = 0;
+        
+        private Transform _transform;
 
-	public void SetTarget(string targetTag) {
-		_target = GameObject.FindGameObjectWithTag(targetTag);
+        void Awake() {
+            _transform = transform;
+        }
 
-		Vector3 pos = transform.position;
-		pos.z = 0;
-		transform.position = pos;
-	}
-	
-	// Update is called once per frame
-	void FixedUpdate () {
-		if (_target != null) {
-			FollowTarget();
-		}
+        void Start()
+        {
+            SetTarget("Player");
+        }
 
-		if (_shake) {
-			Vector3 shakePos = transform.localPosition + Random.insideUnitSphere * _shakeAmount;
-			shakePos.z = 0;
+        public void SetTarget(string targetTag)
+        {
+            _target = GameObject.FindGameObjectWithTag(targetTag);
 
-			transform.localPosition = shakePos;
+            Vector3 pos = _transform.position;
+            pos.z = 0;
+            _transform.position = pos;
+        }
 
-			if (_shakeTime <= _shakeDuration) {
-				_shakeTime += Time.deltaTime;
-			} else {
-				_lerp = 1;
-				_shakeTime = 0;
-				_shake = false;
-			}
-		}
-	}
+        // Update is called once per frame
+        void FixedUpdate()
+        {
+            if (_target != null)
+            {
+                FollowTarget();
+            }
 
-	public void Shake() {
-		Shake(0.7f);
-	}
+            if (_shake)
+            {
+                Vector3 shakePos = _transform.localPosition + Random.insideUnitSphere * _shakeAmount;
+                shakePos.z = 0;
 
-	public void Shake(float amount) {
-		_shake = true;
-		_shakeAmount = amount;
-	}
+                _transform.localPosition = shakePos;
 
-	private void FollowTarget() {
-		if (FindObjectOfType<LevelManager>().playerInPattern.GetType() == typeof(FallingGatePattern) &&
-				_target.tag == "Player" &&
-				! _target.GetComponent<PlayerScript>().isGrounded 
-		) {
-			Vector3 newPos = _target.transform.position;
-			
-			newPos.y -= (CameraScreen.height / GetDivider());
-			newPos.z = 0;
+                if (_shakeTime <= _shakeDuration)
+                {
+                    _shakeTime += Time.deltaTime;
+                }
+                else
+                {
+                    _lerp = 1;
+                    _shakeTime = 0;
+                    _shake = false;
+                }
+            }
+        }
 
-			transform.position = Vector3.Lerp(transform.position, newPos, 0.1f);
-		} else {
-			Vector3 newPos = _target.transform.position;
-			
-			newPos.x += CameraScreen.width / GetDivider();
-			newPos.y += (CameraScreen.height / (GetDivider() * 3));
-			newPos.z = 0;
+        public void Shake()
+        {
+            Shake(0.7f);
+        }
 
-			transform.position = Vector3.Lerp(transform.position, newPos, _lerp);
-		}		
-	}
+        public void Shake(float amount)
+        {
+            _shake = true;
+            _shakeAmount = amount;
+        }
 
-	private int GetDivider() {
-		if (Camera.main.aspect >= 1.7)
-		{
-				return 3;
-		}
-		else if (Camera.main.aspect >= 1.5)
-		{
-				return 3;
-		}
-		else
-		{
-				return 4;
-		}
-	} 
+        private void FollowTarget()
+        {
+            if (FindObjectOfType<LevelManager>().playerInPattern.GetType() == typeof(FallingGatePattern) &&
+                    _target.tag == "Player" &&
+                    !_target.GetComponent<PlayerScript>().isGrounded
+            )
+            {
+                Vector3 newPos = _target.transform.position;
+
+                newPos.y -= (CameraScreen.height / GetDivider());
+                newPos.z = 0;
+
+                _transform.position = Vector3.Lerp(_transform.position, newPos, 0.1f);
+            }
+            else
+            {
+                Vector3 newPos = _target.transform.position;
+
+                newPos.x += CameraScreen.width / GetDivider();
+                newPos.y += (CameraScreen.height / (GetDivider() * 3));
+                newPos.z = 0;
+
+                _transform.position = Vector3.Lerp(_transform.position, newPos, _lerp);
+            }
+        }
+
+        private int GetDivider()
+        {
+            if (Camera.main.aspect >= 1.7)
+            {
+                return 3;
+            }
+            else if (Camera.main.aspect >= 1.5)
+            {
+                return 3;
+            }
+            else
+            {
+                return 4;
+            }
+        }
+    }
 }
+

@@ -2,37 +2,63 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ExplosionScript : MonoBehaviour {
+namespace ColourRun.Effects
+{
+    public class ExplosionScript : MonoBehaviour
+    {
+        private float _timeAlive = 0;
+        private float _explosionSize = 2f;
 
-	private float _timeAlive = 0;
-	private float _explosionSize = 2f;
-	// Use this for initialization
-	void Start () {
-		transform.localScale = new Vector3(7f,7f,0f) * _explosionSize;
-		GetComponent<SpriteRenderer>().color = Color.white;
-	}
-	
-	// Update is called once per frame
-	void Update () {
+        private Transform _transform;
+        private SpriteRenderer _renderer;
 
-		if (_timeAlive > 0.03f) {
-			GetComponent<SpriteRenderer>().color = Color.black;
-		}
+        private GameObject _gameObject;
 
-		if (_timeAlive > 0.05f) {
-			GetComponent<SpriteRenderer>().color = Color.white;
-		}
+        void Awake() {
+            _transform = transform;
+            _renderer = GetComponent<SpriteRenderer>();
+            _gameObject = gameObject;
+        }
 
-		if (_timeAlive > 0.08f) {
-			GetComponent<SpriteRenderer>().color = Color.black;
-		}
+        // Use this for initialization
+        void OnEnable()
+        {
+            _transform.localScale = new Vector3(7f, 7f, 0f) * _explosionSize;
+            _renderer.color = Color.white;
+            _timeAlive = 0;
+        }
 
-		transform.localScale -= new Vector3(1.5f,1.5f,0) * _explosionSize;
+        // Update is called once per frame
+        void Update()
+        {
+            if ( ! _gameObject.activeInHierarchy) {
+                return;
+            }
 
-		_timeAlive += Time.deltaTime;
+            if (_timeAlive > 0.03f)
+            {
+                _renderer.color = Color.black;
+            }
 
-		if (transform.localScale.x < 0.5f) {
-			Destroy(gameObject);
-		}
-	}
+            if (_timeAlive > 0.05f)
+            {
+                _renderer.color = Color.white;
+            }
+
+            if (_timeAlive > 0.08f)
+            {
+                _renderer.color = Color.black;
+            }
+
+            _transform.localScale -= new Vector3(1.5f, 1.5f, 0) * _explosionSize;
+
+            _timeAlive += Time.deltaTime;
+
+            if (_transform.localScale.x < 0.5f) {
+                _gameObject.SetActive(false);
+            }
+        }
+    }
 }
+
+

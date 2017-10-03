@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SocialPlatforms;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
+using ColourRun.Leaderboard;
 
 public class SocialManager : MonoBehaviour {
 

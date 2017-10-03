@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using ColourRun.Interfaces;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -20,7 +21,6 @@ public class ByeByeItem : MonoBehaviour, IInputTrigger {
 		Color.white
 	};
 
-	private InputManager _inputManager;
 	private float _timeSinceLastUpdate = 0;
 	private bool _gotBiggerLastUpdate = false;
 	private Vector3 _scaler;
@@ -28,12 +28,30 @@ public class ByeByeItem : MonoBehaviour, IInputTrigger {
 	private bool _fadeOut = false;
   public void Trigger()
   {
-    //GetComponent<SpriteRenderer>().sprite = _sprites[ UnityEngine.Random.Range(0, (_sprites.Count - 1)) ];
 		GetComponent<SpriteRenderer>().color = GetRandomColor();
   }
 
-  void Awake () {
+	private SpriteRenderer _renderer;
+	private Transform _transform;
+
+	private InputManager _inputManager;
+
+	void Awake() {
+		_renderer = GetComponent<SpriteRenderer>();
+		_transform = transform;
+		
+		_inputManager = FindObjectOfType<InputManager>();
 		_player = GameObject.FindGameObjectWithTag("Player");
+	}
+
+	void OnEnable()
+	{
+		_inputManager.add( this );
+		CreateItem();
+	}
+
+	private void CreateItem() {
+		_transform.localScale = new Vector3(1,1,1);
 
 		_isBigOne = (UnityEngine.Random.Range(0, 30) == 0);
 
@@ -42,10 +60,10 @@ public class ByeByeItem : MonoBehaviour, IInputTrigger {
 		
 		_speed = (_isBigOne) ? (UnityEngine.Random.Range(0.5f, 0.7f) / 10)  : (UnityEngine.Random.Range(0.5f, 2f) / 10);
 		
-		GetComponent<SpriteRenderer>().sprite = _sprites[ UnityEngine.Random.Range(0, (_sprites.Count - 1)) ];
-		GetComponent<SpriteRenderer>().color = GetRandomColor();
+		_renderer.sprite = _sprites[ UnityEngine.Random.Range(0, (_sprites.Count - 1)) ];
+		_renderer.color = GetRandomColor();
 
-		transform.position = new Vector3 (
+		_transform.position = new Vector3 (
 			_player.transform.position.x + (CameraScreen.width * 1.5f),
 			Random.Range(Camera.main.transform.position.y, Camera.main.transform.position.y + (CameraScreen.height / 2)),
 			10
@@ -55,21 +73,23 @@ public class ByeByeItem : MonoBehaviour, IInputTrigger {
 		transform.Rotate(0, 0, UnityEngine.Random.Range(0, 20));
 	}
 
-	void Start() {
-		_inputManager = FindObjectOfType<InputManager>();
-		_inputManager.add( this );
+	void OnDisable() {
+		_inputManager.remove( this );
 	}
 
-	// Update is called once per frame
 	void FixedUpdate () {
+		if ( ! gameObject.activeInHierarchy) {
+			return;
+		}
+
 		if (_fadeOut) {
-			Color c = GetComponent<SpriteRenderer>().color;
+			Color c = _renderer.color;
 			c.a -= 0.01f;
 			
 			if (c.a <= 0) {
-				Destroy( gameObject );
+				gameObject.SetActive(false);
 			} else {
-				GetComponent<SpriteRenderer>().color = c;
+				_renderer.color = c;
 			}
 		}
 
@@ -87,29 +107,25 @@ public class ByeByeItem : MonoBehaviour, IInputTrigger {
 			_timeSinceLastUpdate += Time.deltaTime;
 		}
 
-		transform.Translate( Vector3.left * _speed );
+		_transform.Translate( Vector3.left * _speed );
 
 		DestoyOnOutOfScreen();
 	}
 
 	private Color GetRandomColor() {
 		Color c = _colors[ UnityEngine.Random.Range(0, _colors.Count) ];
-		c.a = UnityEngine.Random.Range(0.1f, 0.5f);
+		c.a = UnityEngine.Random.Range(0.1f, 0.3f);
 
 		return c;
 	}
 
 	private void DestoyOnOutOfScreen() {
 		if (CameraScreen.ObjectIsBehindCamera(transform)) {
-				Destroy(gameObject);
+				gameObject.SetActive(false);
 			}
 	}
 
 	public void FadeOut() {
 		_fadeOut = true;
-	}
-
-	void OnDestroy() {
-		_inputManager.remove( this );
 	}
 }

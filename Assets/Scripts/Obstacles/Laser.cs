@@ -1,6 +1,9 @@
-﻿using System.Collections;
+﻿using ColourRun.Interfaces;
+using ColourRun.Managers;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ColourRun.Cameras;
 
 public class Laser : ColorChangeableObject, IObstacle, IHitable {
     private GameObject _player;
@@ -15,25 +18,41 @@ public class Laser : ColorChangeableObject, IObstacle, IHitable {
 
     protected bool _isHit = false;
 
+    private TutorialManager tm;
+
+    protected SoundEffectManager soundManager;
+
+    protected CameraScript cameraScript;
+
+    protected TimeManager timeManager;
+    protected ScoreManager scoreManager;
     public bool isHit {
         get {
             return _isHit;
         }
     }
 
+    public override void Awake() {
+        base.Awake();
+        soundManager = FindObjectOfType<SoundEffectManager>();
+        cameraScript = Camera.main.GetComponent<CameraScript>();
+        timeManager = FindObjectOfType<TimeManager>();
+        scoreManager = FindObjectOfType<ScoreManager>();
+    }
+
     public override void Start () {
         base.Start();
 
         _inputManager = FindObjectOfType<InputManager>();
-        _player = GameObject.FindGameObjectWithTag("Player");
-
+        tm = FindObjectOfType<TutorialManager>();
         _inputManager.add(this);
     }
     public virtual void FixedUpdate() {
         if (_isHit) {
-            Color c = GetComponent<SpriteRenderer>().color;
+            Color c = spriteRenderer.color;
             c.a = 0.5f;
-            GetComponent<SpriteRenderer>().color = c;
+            
+            spriteRenderer.color = c;
         }
 
         if(CameraScreen.ObjectIsBehindCamera(transform) && transform.parent == null)
@@ -43,19 +62,19 @@ public class Laser : ColorChangeableObject, IObstacle, IHitable {
     }
 
     public void CheckColors (ColorChangeableObject player) {
-        if (_player.GetComponent<PlayerScript>().IsDead()) {
+        if (playerScript.IsDead()) {
             return;
         }
 
         if (player.GetCurrentColor() != GetCurrentColor()) {
-            _player.GetComponent<PlayerScript>().Hit();
+            playerScript.Hit();
             return;
         }
 
 
-        FindObjectOfType<PlayerScript>().SetMultipliers(gameObject);        
-        FindObjectOfType<ScoreManager>().AddPoints( GetPoints() );
-        FindObjectOfType<PlayerScript>().OnScore(gameObject);
+        playerScript.SetMultipliers(gameObject);        
+        scoreManager.AddPoints( GetPoints() );
+        playerScript.OnScore(gameObject);
         
         Hit();
     }
@@ -97,23 +116,31 @@ public class Laser : ColorChangeableObject, IObstacle, IHitable {
             return;
         }
 
-        FindObjectOfType<TimeManager>().FreezeFrame();
-        FindObjectOfType<SoundEffectManager>().PlayDestroy();
-        FindObjectOfType<SoundEffectManager>().PlayDeath();
+        timeManager.FreezeFrame();
+        soundManager.PlayDestroy();
+        soundManager.PlayDeath();
         
-        Camera.main.GetComponent<CameraScript>().Shake();
+        cameraScript.Shake();
 
-        for (int i = 0; i < UnityEngine.Random.Range(100, 150); i++) {
-            GameObject point = Instantiate(_pointObject);
-            point.GetComponent<SpriteRenderer>().color = GetCurrentColor();
-            point.transform.position = GameObject.FindGameObjectWithTag("Player").transform.position;
+        for (int i = 0; i < 50; i++) {
+            GameObject point = PoolManager.GetItem("Point");
+            
+            if (point != null) {
+                point.GetComponent<SpriteRenderer>().color = GetCurrentColor();
+                point.transform.position = GameObject.FindGameObjectWithTag("Player").transform.position;
+                point.SetActive(true);
+            }
         }
 
-        GameObject explosion = Instantiate(_explosion);
+        GameObject explosion = PoolManager.GetItem("Explosion");
         
-        Vector3 explosionPosition = transform.position;
-        explosionPosition.y = FindObjectOfType<PlayerScript>().transform.position.y;
-        explosion.transform.position = explosionPosition;
+        if (explosion) {
+            Vector3 explosionPosition = transform.position;
+            explosionPosition.y = FindObjectOfType<PlayerScript>().transform.position.y;
+            explosion.transform.position = explosionPosition;
+            explosion.SetActive(true);
+        }
+
 
         _isHit = true;
     }
@@ -126,6 +153,18 @@ public class Laser : ColorChangeableObject, IObstacle, IHitable {
 
         if (collision.CompareTag("Player"))
         {
+            if (tm.IsTutorialActive && tm.IsFirstMultiplierActive)
+            {
+                tm.IsFirstMultiplierActive = false;
+                tm.IsTryingSelf = true;
+            }
+            else if (tm.IsTutorialActive && tm.IsFirstColorActive)
+            {
+                Debug.Log("????");
+                tm.IsFirstColorActive = false;
+                tm.IsFirstMultiplierActive = true;
+            }   
+
             CheckColors(collision.GetComponent<ColorChangeableObject>());
         }   
     }
@@ -136,6 +175,6 @@ public class Laser : ColorChangeableObject, IObstacle, IHitable {
 
     float IObstacle.GetYOffset()
     {
-        return GetComponent<SpriteRenderer>().bounds.extents.y; 
+        return spriteRenderer.bounds.extents.y; 
     }
 }

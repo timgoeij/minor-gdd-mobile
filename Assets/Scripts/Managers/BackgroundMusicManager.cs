@@ -8,6 +8,12 @@ public class BackgroundMusicManager : MonoBehaviour {
 	private AudioClip _byeByePlanet;
 	[SerializeField]
 	private AudioClip _aWelcomeHell;
+	[SerializeField]
+	private AudioClip _heavensLight;
+
+	private AudioSource _source;
+	private BackgroundManager _bgManager;
+
 
 	private float _timeInPitchDown = 0f;
 	private float _pitchDownDuration = 0f;
@@ -25,8 +31,15 @@ public class BackgroundMusicManager : MonoBehaviour {
 			new BgAudio {
 				clip = _aWelcomeHell,
 				bgPattern = new HellPattern()
-			}			
+			},
+			new BgAudio {
+				clip = _heavensLight,
+				bgPattern = new LightPattern()
+			}				
 		};
+
+		_source = GetComponent<AudioSource>();
+		_bgManager = FindObjectOfType<BackgroundManager>();
 	}
 
 	// Use this for initialization
@@ -38,7 +51,7 @@ public class BackgroundMusicManager : MonoBehaviour {
 	void Update () {
 		HandlePitch();
 
-		if ( ! GetComponent<AudioSource>().isPlaying && Time.timeScale > 0) {
+		if ( ! _source.isPlaying && Time.timeScale > 0) {
 			_songIndex++;
 
 			if (_songIndex >= _songs.Count) {
@@ -56,20 +69,20 @@ public class BackgroundMusicManager : MonoBehaviour {
 	}
 
 	private void StartPlayingSong(BgAudio bgAudio) {
-		GetComponent<AudioSource>().clip = bgAudio.clip;
-		GetComponent<AudioSource>().Play();
-		FindObjectOfType<BackgroundManager>().SetPattern(bgAudio.bgPattern);
+		_source.clip = bgAudio.clip;
+		_source.Play();
+		_bgManager.SetPattern(bgAudio.bgPattern);
 	}
 
 	private void HandlePitch() {
 		if (_inPitchdown) {
 			if (_timeInPitchDown >= _pitchDownDuration) {
-				GetComponent<AudioSource>().pitch = 1f;
+				_source.pitch = 1f;
 				_timeInPitchDown = 0;
 				_pitchDownDuration = 0;
 				_inPitchdown = false;
 			} else {
-				GetComponent<AudioSource>().pitch += _pitchChange;
+				_source.pitch += _pitchChange;
 				_timeInPitchDown += Time.deltaTime;
 			}
 		}
@@ -83,11 +96,11 @@ public class BackgroundMusicManager : MonoBehaviour {
 	}
 
 	public void PauseMusic() {
-		GetComponent<AudioSource>().Pause();
+		_source.Pause();
 	}
 
 	public void ResumeMusic() {
-		GetComponent<AudioSource>().Play();
+		_source.Play();
 	}
 }
 

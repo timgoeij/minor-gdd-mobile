@@ -12,6 +12,14 @@ public class MusicScript : MonoBehaviour {
 	Sprite _offSprite;
 
     private bool isMusicOff = false;
+    
+    AudioSource _source;
+    Image _audioSprite;
+
+    void Awake() {
+        _source = GetComponentInChildren<AudioSource>();
+        _audioSprite = GameObject.FindGameObjectWithTag("AudioToggle").GetComponent<Image>();
+    }
 
 	// Use this for initialization
 	void Start () {
@@ -25,23 +33,18 @@ public class MusicScript : MonoBehaviour {
             PlayerPrefs.SetInt("Audio", isMusicOff ? 0 : 1);
         }
 
-        GetComponentInChildren<AudioSource>().mute = isMusicOff;
+        _source.mute = isMusicOff;
 
-        GameObject.FindGameObjectWithTag("AudioToggle").GetComponent<Image>().sprite = isMusicOff ? _offSprite : _onSprite;
+        _audioSprite.sprite = isMusicOff ? _offSprite : _onSprite;
     }
-	
-	// Update is called once per frame
-	void Update () {
-
-	}
 
 	public void ToggleMusic() {
        
-        GetComponentInChildren<AudioSource>().mute = !GetComponentInChildren<AudioSource>().mute;
+        _source.mute = !_source.mute;
         isMusicOff = !isMusicOff;
 
         PlayerPrefs.SetInt("Audio", isMusicOff ? 0 : 1);
-
-		GameObject.FindGameObjectWithTag("AudioToggle").GetComponent<Image>().sprite = (GetComponentInChildren<AudioSource>().mute) ? _offSprite : _onSprite;
+		
+        _audioSprite.sprite = (_source.mute) ? _offSprite : _onSprite;
 	}
 }

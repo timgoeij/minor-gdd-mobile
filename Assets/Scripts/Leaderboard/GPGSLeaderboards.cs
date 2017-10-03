@@ -21,10 +21,14 @@
 /// Resources.
 ///
 
-
-public static class GPGSLeaderboards
+namespace ColourRun.Leaderboard
 {
+    public static class GPGSLeaderboards
+    {
         public const string leaderboard_worldwide = "CgkIwISmtuQSEAIQAA"; // <GPGSID>
 
+    }
+
 }
+
 

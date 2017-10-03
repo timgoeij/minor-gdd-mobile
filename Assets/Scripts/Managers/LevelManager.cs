@@ -1,8 +1,11 @@
-﻿using System;
+﻿using ColourRun.Cameras;
+using ColourRun.Interfaces;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using ColourRun.Controller;
 
 public class LevelManager : MonoBehaviour {
 
@@ -52,6 +55,11 @@ public class LevelManager : MonoBehaviour {
 		}
 	}
 
+	private PlayerScript _playerScript;
+	private DifficultyManager _difficultyManager;
+	private FloorManager _floorManager;
+	private GameController _controller;
+
 	void Awake() {
 		_colorsToAdd = new List<Color>();
 
@@ -60,18 +68,22 @@ public class LevelManager : MonoBehaviour {
 		_levelPatterns.Add( new OneQuickTab() );
 		_levelPatterns.Add( new SameButQuickLasers() );
 		_levelPatterns.Add( new QuickButRandomPattern() );
+
+		_player = GameObject.FindGameObjectWithTag("Player");
+		_playerScript = _player.GetComponent<PlayerScript>();
+		_difficultyManager = FindObjectOfType<DifficultyManager>();
+		_floorManager = FindObjectOfType<FloorManager>();
+		_controller = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
 	}
 
 	void Start () {
-		_player = GameObject.FindGameObjectWithTag("Player");
-
 		_currentPattern = new StartingPattern();
 		_playerInPattern = _currentPattern;
 		InitPattern();
 	}
 
 	void Update () {
-		if ( ! FindObjectOfType<GameController>().gameStarted) {
+		if ( ! _controller.gameStarted) {
 			return;
 		}
 
@@ -80,13 +92,13 @@ public class LevelManager : MonoBehaviour {
 			return;
 		}
 
-		if ( ! FindObjectOfType<PlayerScript>().isGrounded && FindObjectOfType<PlayerScript>().touchedWall) {
+		if ( ! _playerScript.isGrounded && _playerScript.touchedWall) {
 			return;
 		}
 
 		if (
 			_lastObstacleOfPreviousPattern != null &&
-			_lastObstacleOfPreviousPattern.transform.position.x < FindObjectOfType<PlayerScript>().transform.position.x && 
+			_lastObstacleOfPreviousPattern.transform.position.x < _playerScript.transform.position.x && 
 			_colorsToAdd.Count != 0
 		) {
 			AddColors();
@@ -103,10 +115,12 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	private void AddColors() {
+		ColorOrder order = FindObjectOfType<ColorOrder>();
+
 		foreach(Color c in _colorsToAdd) {
 			ColorManager.AddColor(c);
-			notitfyAddingNewColor -= FindObjectOfType<ColorOrder>().OnNotifiedColorAdded;
-			notitfyAddingNewColor += FindObjectOfType<ColorOrder>().OnNotifiedColorAdded;
+			notitfyAddingNewColor -= order.OnNotifiedColorAdded;
+			notitfyAddingNewColor += order.OnNotifiedColorAdded;
 
 			if(notitfyAddingNewColor != null)
 			{
@@ -118,7 +132,7 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	private void SetNewPattern() {
-		if (FindObjectOfType<DifficultyManager>().HasPatternToAdd()) {
+		if (_difficultyManager.HasPatternToAdd()) {
 			SetRequiredPattern();
 		} else {
 			SetRandomPattern();
@@ -133,7 +147,7 @@ public class LevelManager : MonoBehaviour {
 
 	private void InitPattern() {
 		_currentPattern.init();
-		FindObjectOfType<FloorManager>().DescendingOptions(_currentPattern.AllowDescending(), _currentPattern.DescendingChance());
+		_floorManager.DescendingOptions(_currentPattern.AllowDescending(), _currentPattern.DescendingChance());
 	}
 	private void SetGate() {
 		GameObject instance = Instantiate(_gate);
@@ -156,7 +170,7 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	private void SetRequiredPattern() {
-		PatternToAdd p = FindObjectOfType<DifficultyManager>().GetPatternToAdd();
+		PatternToAdd p = _difficultyManager.GetPatternToAdd();
 		_currentPattern = p.Pattern;
 		p.Added = true;
 
@@ -185,6 +199,7 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	private void UpdateLevel() {
+		Debug.Log("UPDATE LEVEL");
 		if (_timeSinceLastObstacle < _currentPattern.TimeBetweenObstacles() ) {
 			_timeSinceLastObstacle += Time.deltaTime;
 			return;
@@ -208,6 +223,7 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	private void PlaceObstacle() {
+		Debug.Log("PlaceObstacle!");
 		GameObject obstacle = _currentPattern.availableObstacles()[UnityEngine.Random.Range(0, (_currentPattern.availableObstacles().Count))];
 		GameObject instance = Instantiate(obstacle);
 
@@ -241,7 +257,7 @@ public class LevelManager : MonoBehaviour {
 			instance.GetComponent<Laser>().SetColor( _currentPattern.GetColor() );
 		}
 
-		if (instance.GetComponent<RotationCube>() != null) {
+		if (instance.GetComponent<Rotator>() != null) {
 			foreach(Laser laser in instance.GetComponentsInChildren<Laser>()) {
 				laser.SetColor( _currentPattern.GetColor() );
 			}

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ColourRun.Cameras;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -67,7 +68,7 @@ public class FloorManager : MonoBehaviour {
 
 		bool isLeft = false;
 
-		int numberOfWalls = ((2 * UnityEngine.Random.Range(1,2)) * UnityEngine.Random.Range(1,3));
+		int numberOfWalls = ((2 * UnityEngine.Random.Range(1,6)) * UnityEngine.Random.Range(1,3));
 
 		for (int i = 0; i < numberOfWalls; i++) {
 			GameObject floor = Instantiate(_floorObject);

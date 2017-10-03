@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Rotator : MonoBehaviour, IObstacle {
+public class Rotator : MonoBehaviour, ColourRun.Interfaces.IObstacle
+{
 
 	private float _rotationSpeed;
 
@@ -21,7 +22,7 @@ public class Rotator : MonoBehaviour, IObstacle {
         }
     }
 
-  float IObstacle.GetYOffset()
+  float ColourRun.Interfaces.IObstacle.GetYOffset()
   {
     return (GetComponentInChildren<SpriteRenderer>().bounds.size.y * 2.5f);
   }

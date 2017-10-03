@@ -4,27 +4,26 @@ using UnityEngine;
 
 public class HellPattern : IBackgroundPattern {
 
-	private GameObject _bgItem;
+  private List<HellItem> _items;
 
-  public HellPattern()
-  {
-    _bgItem = Resources.Load("HellItem") as GameObject;
+  public void Init() {
+    _items = new List<HellItem>();
+    return;
   }
 
-  public void Stop()
-  {
-    foreach(HellItem i in MonoBehaviour.FindObjectsOfType<HellItem>()) {
+  public void Stop() {
+    foreach(HellItem i in _items.Where(i => i.GetGameObject.activeInHierarchy == true)) {
       i.Explode();
     }
   }
 
-  public void Update()
-  {
-    HellItem[] items = MonoBehaviour.FindObjectsOfType<HellItem>();
+  public void Update() {
 
-    if (items.Where(i => i.isFloating == false).Count() < 3) {
-      if (_bgItem != null) {
-        MonoBehaviour.Instantiate( _bgItem );
+    if (_items.Where(i => i.GetGameObject.activeInHierarchy == true && i.isFloating == false).Count() < 3) {
+      GameObject item = PoolManager.GetItem("HellItem");
+      if (item != null) {
+        item.SetActive(true);
+        _items.Add(item.GetComponent<HellItem>());
       }
     }
   }

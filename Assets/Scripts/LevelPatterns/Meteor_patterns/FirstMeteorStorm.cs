@@ -9,7 +9,7 @@ public class FirstMeteorStorm : LevelPattern {
         LoadObstacle("MeteorSpawner");
         _timeBetweenObstacles = -1f;
         _obstacleChance = 0;
-        _patternDuration = 30f;
+        _patternDuration = 12f;
         _maxObstaclesSkippedInRow = 0;
         _maxColorRepeat = 1;
         _quietTime = 2f;
@@ -21,7 +21,7 @@ public class FirstMeteorStorm : LevelPattern {
         if (_timeBetweenObstacles == -1)
             _timeBetweenObstacles = 0;
         else if (_timeBetweenObstacles == 0)
-            _timeBetweenObstacles = 11;
+            _timeBetweenObstacles = 13;
 
         return _timeBetweenObstacles;
     }
@@ -31,6 +31,7 @@ public class FirstMeteorStorm : LevelPattern {
         foreach (GameObject meteorSpawner in _availableObstables)
         {
             meteorSpawner.GetComponent<MeteorSpawner>().SpawnMode = MeteorSpawner.MeteorSpawnMode.SingleMeteor;
+            meteorSpawner.GetComponent<MeteorSpawner>().MaxDuration = _patternDuration - 3;
         }
 
         _timeBetweenObstacles = -1;
