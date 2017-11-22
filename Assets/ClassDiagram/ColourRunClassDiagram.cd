@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Rotator">
+    <Position X="23.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAiAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Obstacles\Rotator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="RotationCube">
+    <Position X="25.5" Y="7.75" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="RotationCube.laserEnum" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Scripts\Obstacles\RotationCube.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAQAQAABAiAAAAAAAEAAAAEAAAAAAQAAAAABAAQAAEA=</HashCode>
+      <FileName>Assets\Scripts\Obstacles\RotationCube.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeteorSpawner">
+    <Position X="22" Y="7.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="MeteorSpawner.MeteorSpawnMode" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Scripts\Obstacles\MeteorSpawner.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>gCQIAACAgCAAAIABAIAAAAAAAAAAAAEDAAEAAQAAAQA=</HashCode>
+      <FileName>Assets\Scripts\Obstacles\MeteorSpawner.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="ColourRun.Interfaces.IHitable">
+    <Position X="20.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Interfaces\IHitable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ColourRun.Interfaces.IInputTrigger">
+    <Position X="20.25" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Interfaces\IInputTrigger.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ColourRun.Interfaces.IObstacle">
+    <Position X="20.25" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Interfaces\IObstacle.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

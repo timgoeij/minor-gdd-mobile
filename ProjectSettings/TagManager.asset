@@ -3,7 +3,17 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - InputManager
+  - OldGameController
+  - AudioToggle
+  - Score
+  - Notifications
+  - ScoreNotifier
+  - SocialMedia
+  - Floor
+  - Wall
+  - Shark
   layers:
   - Default
   - TransparentFX
@@ -40,4 +50,16 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: BackBackBackGround
+    uniqueID: 3795293853
+    locked: 0
+  - name: BackBackGround
+    uniqueID: 1600808367
+    locked: 0
+  - name: Background
+    uniqueID: 1624699369
+    locked: 0
+  - name: Foreground
+    uniqueID: 2834077255
     locked: 0

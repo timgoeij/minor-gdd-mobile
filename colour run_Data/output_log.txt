@@ -1,0 +1,73 @@
+Initialize engine version: 2017.1.0f3 (472613c02cf7)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: NVIDIA GeForce GTX 960M (ID=0x139b)
+    Vendor:   NVIDIA
+    VRAM:     2019 MB
+    Driver:   22.21.13.8541
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Users\tim_g\Documents\GitHub\minor-gdd-mobile\colour run_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\tim_g\Documents\GitHub\minor-gdd-mobile\colour run_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\tim_g\Documents\GitHub\minor-gdd-mobile\colour run_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\tim_g\Documents\GitHub\minor-gdd-mobile\colour run_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\tim_g\Documents\GitHub\minor-gdd-mobile\colour run_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading C:\Users\tim_g\Documents\GitHub\minor-gdd-mobile\colour run_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: C:\Users\tim_g\Documents\GitHub\minor-gdd-mobile\colour run_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading C:\Users\tim_g\Documents\GitHub\minor-gdd-mobile\colour run_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+Platform assembly: C:\Users\tim_g\Documents\GitHub\minor-gdd-mobile\colour run_Data\Managed\UnityEngine.Timeline.dll (this message is harmless)
+Loading C:\Users\tim_g\Documents\GitHub\minor-gdd-mobile\colour run_Data\Managed\UnityEngine.Timeline.dll into Unity Child Domain
+Platform assembly: C:\Users\tim_g\Documents\GitHub\minor-gdd-mobile\colour run_Data\Managed\UnityEngine.Analytics.dll (this message is harmless)
+Loading C:\Users\tim_g\Documents\GitHub\minor-gdd-mobile\colour run_Data\Managed\UnityEngine.Analytics.dll into Unity Child Domain
+Platform assembly: C:\Users\tim_g\Documents\GitHub\minor-gdd-mobile\colour run_Data\Managed\System.dll (this message is harmless)
+Platform assembly: C:\Users\tim_g\Documents\GitHub\minor-gdd-mobile\colour run_Data\Managed\System.Core.dll (this message is harmless)
+- Completed reload, in  0.024 seconds
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+UnloadTime: 2.460444 ms
+Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 4.344888 ms
+
+Unloading 55 unused Assets to reduce memory usage. Loaded Objects now: 795.
+Total: 0.430666 ms (FindLiveObjects: 0.061777 ms CreateObjectMapping: 0.038666 ms MarkObjects: 0.307555 ms  DeleteObjects: 0.021777 ms)
+
+Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 2.137333 ms
+
+Unloading 54 unused Assets to reduce memory usage. Loaded Objects now: 795.
+Total: 0.380888 ms (FindLiveObjects: 0.061777 ms CreateObjectMapping: 0.027555 ms MarkObjects: 0.272000 ms  DeleteObjects: 0.018666 ms)
+
+Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 2.790222 ms
+
+Unloading 54 unused Assets to reduce memory usage. Loaded Objects now: 795.
+Total: 0.549777 ms (FindLiveObjects: 0.061333 ms CreateObjectMapping: 0.022222 ms MarkObjects: 0.428444 ms  DeleteObjects: 0.036444 ms)
+
+Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 2.375111 ms
+
+Unloading 54 unused Assets to reduce memory usage. Loaded Objects now: 795.
+Total: 0.372000 ms (FindLiveObjects: 0.065333 ms CreateObjectMapping: 0.022222 ms MarkObjects: 0.262666 ms  DeleteObjects: 0.021333 ms)
+
+Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 2.646222 ms
+
+Unloading 54 unused Assets to reduce memory usage. Loaded Objects now: 795.
+Total: 0.399555 ms (FindLiveObjects: 0.091555 ms CreateObjectMapping: 0.025333 ms MarkObjects: 0.260000 ms  DeleteObjects: 0.021333 ms)
+
+Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 2.880444 ms
+
+Unloading 54 unused Assets to reduce memory usage. Loaded Objects now: 795.
+Total: 0.412888 ms (FindLiveObjects: 0.060888 ms CreateObjectMapping: 0.022222 ms MarkObjects: 0.308888 ms  DeleteObjects: 0.019111 ms)
+
+Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 2.788444 ms
+
+Unloading 54 unused Assets to reduce memory usage. Loaded Objects now: 795.
+Total: 0.421333 ms (FindLiveObjects: 0.060000 ms CreateObjectMapping: 0.022222 ms MarkObjects: 0.313777 ms  DeleteObjects: 0.024000 ms)
+
+Setting up 2 worker threads for Enlighten.
+  Thread -> id: 13044 -> priority: 1 
+  Thread -> id: 1867c -> priority: 1 
