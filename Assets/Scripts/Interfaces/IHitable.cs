@@ -5,3 +5,5 @@ namespace ColourRun.Interfaces
 
         void Hit();
     }
+}
+

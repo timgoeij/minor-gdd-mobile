@@ -1,161 +1,64 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="ColourRun.Backgrounds.ByebyePattern" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="2.25" Y="0.5" Width="1.5" />
+  <Class Name="Rotator">
+    <Position X="23.75" Y="7.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAIAAAAQYAAAAAAAACA=</HashCode>
-      <FileName>Assets\Scripts\Backgrounds\ByebyePattern.cs</FileName>
+      <HashCode>ACAAAAAAAiAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Obstacles\Rotator.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" Collapsed="true" />
+    <Lollipop Position="0.2" />
   </Class>
-  <Class Name="ColourRun.Backgrounds.HellPattern" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="4" Y="2.5" Width="1.5" />
+  <Class Name="RotationCube">
+    <Position X="25.5" Y="7.75" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="RotationCube.laserEnum" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Scripts\Obstacles\RotationCube.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAACA=</HashCode>
-      <FileName>Assets\Scripts\Backgrounds\HellPattern.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" Collapsed="true" />
-  </Class>
-  <Class Name="ColourRun.Backgrounds.BackgroundsItems.ByeByeItem" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="0.5" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAKBCAAAAiAEABQAIAgACBAAggAAQAAABAAAAAAAAEA=</HashCode>
-      <FileName>Assets\Scripts\Backgrounds\BackgroundItems\ByeByeItem.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" Collapsed="true" />
-  </Class>
-  <Class Name="ColourRun.Backgrounds.BackgroundsItems.HellDebris" Collapsed="true">
-    <Position X="0.5" Y="2.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAQAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Assets\Scripts\Backgrounds\BackgroundItems\HellDebris.cs</FileName>
+      <HashCode>AAQAQAABAiAAAAAAAEAAAAEAAAAAAQAAAAABAAQAAEA=</HashCode>
+      <FileName>Assets\Scripts\Obstacles\RotationCube.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ColourRun.Backgrounds.BackgroundsItems.HellItem" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="2.25" Y="2.5" Width="1.5" />
+  <Class Name="MeteorSpawner">
+    <Position X="22" Y="7.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="MeteorSpawner.MeteorSpawnMode" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Scripts\Obstacles\MeteorSpawner.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AMgAKAAAAiAEABAAAAoAAAgAAAAAAAQAAABAIAAgAAA=</HashCode>
-      <FileName>Assets\Scripts\Backgrounds\BackgroundItems\HellItem.cs</FileName>
+      <HashCode>gCQIAACAgCAAAIABAIAAAAAAAAAAAAEDAAEAAQAAAQA=</HashCode>
+      <FileName>Assets\Scripts\Obstacles\MeteorSpawner.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" Collapsed="true" />
+    <Lollipop Position="0.2" />
   </Class>
-  <Class Name="ColourRun.Cameras.CameraScreen" Collapsed="true">
-    <Position X="4" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAACAAAAAAAQAQAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Assets\Scripts\Camera\CameraScreen.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="ColourRun.Cameras.CameraScript" Collapsed="true">
-    <Position X="5.75" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAQAqAAAAAAAAAAAAAAQEAgAAAAAAAAAABAIAo=</HashCode>
-      <FileName>Assets\Scripts\Camera\CameraScript.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="ColourRun.Controller.GameController" Collapsed="true">
-    <Position X="4" Y="1.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAQAEABAACAIEAAAGiAAEEAAAAIAEjAAAEBgBQAQAIE=</HashCode>
-      <FileName>Assets\Scripts\Controller\GameController.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="ColourRun.Effects.ExplosionScript" Collapsed="true">
-    <Position X="0.5" Y="1.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAQAAAAAACAAABAAAAAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
-      <FileName>Assets\Scripts\Effects\ExplosionScript.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="ColourRun.Effects.PointScript" Collapsed="true">
-    <Position X="0.5" Y="3.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAiAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
-      <FileName>Assets\Scripts\Effects\PointScript.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="ColourRun.Effects.SparkScript" Collapsed="true">
-    <Position X="2.25" Y="3.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAQAAAAAACAAAAIAAAAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
-      <FileName>Assets\Scripts\Effects\SparkScript.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="ColourRun.Effects.TouchCircle" Collapsed="true">
-    <Position X="5.75" Y="3.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAiAACAAAAAAAAAAAAAAAIACAAAAAAAAAAAA=</HashCode>
-      <FileName>Assets\Scripts\Effects\TouchCircle.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="ColourRun.Floors.FloorScript" Collapsed="true">
-    <Position X="2.25" Y="1.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Assets\Scripts\Floors\FloorScript.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="ColourRun.Leaderboard.GPGSLeaderboards" Collapsed="true">
-    <Position X="5.75" Y="1.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAA=</HashCode>
-      <FileName>Assets\Scripts\Leaderboard\GPGSLeaderboards.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="ColourRun.Leaderboard.InternetTest" Collapsed="true">
-    <Position X="5.75" Y="2.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>QAAAAAAAACAAAAAAAAAAAAQAAAAEAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Assets\Scripts\Leaderboard\InternetTest.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="ColourRun.Leaderboard.ToastMessenger" Collapsed="true">
-    <Position X="4" Y="3.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAgAAAAACEAAAAAAAAAAAAAABAAAA=</HashCode>
-      <FileName>Assets\Scripts\Leaderboard\ToastMessenger.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Interface Name="ColourRun.Interfaces.IBackgroundPattern" Collapsed="true">
-    <Position X="0.5" Y="4.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
-      <FileName>Assets\Scripts\Interfaces\IBackgroundPattern.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="ColourRun.Interfaces.IColorChangeObserver" Collapsed="true">
-    <Position X="2.25" Y="4.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABCAAAA=</HashCode>
-      <FileName>Assets\Scripts\Interfaces\IcolorChangeObserver.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="ColourRun.Interfaces.IHitable" Collapsed="true">
-    <Position X="4" Y="4.75" Width="1.5" />
+  <Interface Name="ColourRun.Interfaces.IHitable">
+    <Position X="20.25" Y="7.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Assets\Scripts\Interfaces\IHitable.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="ColourRun.Interfaces.IInputTrigger" Collapsed="true">
-    <Position X="5.75" Y="4.75" Width="1.5" />
+  <Interface Name="ColourRun.Interfaces.IInputTrigger">
+    <Position X="20.25" Y="9" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Assets\Scripts\Interfaces\IInputTrigger.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="ColourRun.Interfaces.IObstacle" Collapsed="true">
-    <Position X="0.5" Y="5.5" Width="1.5" />
+  <Interface Name="ColourRun.Interfaces.IObstacle">
+    <Position X="20.25" Y="10.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Assets\Scripts\Interfaces\IObstacle.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="ColourRun.Interfaces.IPowerUp" Collapsed="true">
-    <Position X="2.25" Y="5.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAABAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Assets\Scripts\Interfaces\IPowerUp.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Font Name="Segoe UI" Size="9" />

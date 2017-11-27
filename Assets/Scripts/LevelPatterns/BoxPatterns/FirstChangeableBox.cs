@@ -21,4 +21,3 @@ public class FirstChangeableBox : LevelPattern {
         MonoBehaviour.FindObjectOfType<DifficultyManager>().AllowBoxColorChanges();
     }
 }
-

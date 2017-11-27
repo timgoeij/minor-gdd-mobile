@@ -8,5 +8,6 @@ namespace ColourRun.Interfaces
     {
         void Trigger();
     }
+
 }
 

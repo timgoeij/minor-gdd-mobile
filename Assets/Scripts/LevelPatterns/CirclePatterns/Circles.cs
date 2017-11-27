@@ -21,4 +21,3 @@ public class Circles : LevelPattern {
         MonoBehaviour.FindObjectOfType<NotificationManager>().AddNotification("!M0rE !1NC0M1nG", 2.5f);
     }
 }
-

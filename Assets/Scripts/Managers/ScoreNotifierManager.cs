@@ -86,3 +86,5 @@ namespace ColourRun.Managers
             GetComponent<Text>().color = c;
         }
     }
+
+}

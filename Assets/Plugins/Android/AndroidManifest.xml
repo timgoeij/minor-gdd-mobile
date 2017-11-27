@@ -39,5 +39,4 @@ Service handling Google Sign-In user revocation. For apps that do not integrate 
   <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
   <uses-feature android:name="android.hardware.touchscreen.multitouch" android:required="false" />
   <uses-feature android:name="android.hardware.touchscreen.multitouch.distinct" android:required="false" />
-
 </manifest>
