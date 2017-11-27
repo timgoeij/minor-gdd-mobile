@@ -158,4 +158,3 @@ namespace ColourRun.Backgrounds.BackgroundItems
     }
 
 }
-

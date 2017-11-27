@@ -69,5 +69,3 @@ namespace ColourRun.Managers
         }
     }
 }
-
-

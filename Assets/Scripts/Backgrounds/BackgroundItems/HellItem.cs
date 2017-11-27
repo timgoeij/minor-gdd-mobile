@@ -1,3 +1,4 @@
+
 ﻿using ColourRun.Cameras;
 using ColourRun.Interfaces;
 using ColourRun.Managers;
@@ -180,4 +181,3 @@ namespace ColourRun.Backgrounds.BackgroundItems
     }
 
 }
-

@@ -1,3 +1,4 @@
+
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,4 +18,3 @@ public class UpAndDownLaserBox : LevelPattern
         _quietTime = .5f;
         _descendingChance = 2;
     }
-}

@@ -75,3 +75,4 @@ public class TriangleShark : Laser, IObstacle
         return -(GetComponent<SpriteRenderer>().bounds.extents.y / 2);
     }
 }
+

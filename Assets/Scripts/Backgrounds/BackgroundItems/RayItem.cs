@@ -37,4 +37,3 @@ namespace ColourRun.Backgrounds.BackgroundItems
     }
 
 }
-

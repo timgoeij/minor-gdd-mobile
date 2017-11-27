@@ -59,5 +59,4 @@ namespace ColourRun.Effects
             _timeAlive += Time.deltaTime;
         }
     }
-
 }

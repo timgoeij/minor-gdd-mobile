@@ -30,4 +30,3 @@ public class UpAndDownChangeableLaserBox : LevelPattern
 
         base.init();
     }
-}

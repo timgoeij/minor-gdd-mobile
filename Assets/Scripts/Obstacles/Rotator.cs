@@ -28,3 +28,4 @@ public class Rotator : MonoBehaviour, ColourRun.Interfaces.IObstacle
     return (GetComponentInChildren<SpriteRenderer>().bounds.size.y * 2.5f);
   }
 }
+

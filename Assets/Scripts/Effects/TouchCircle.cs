@@ -73,5 +73,3 @@ namespace ColourRun.Effects
         }
     }
 }
-
-
